@@ -1,3 +1,11 @@
 package com.ummshsh.rssreader
 
-class RssFetcher
+import com.prof.rssparser.Article
+import com.prof.rssparser.Parser
+
+class RssFetcher {
+    suspend fun fetchEntries(url: String): MutableList<Article> {
+        val parser = Parser()
+        return parser.getArticles(url)
+    }
+}

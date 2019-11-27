@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import com.ummshsh.rssreader.R
+import com.ummshsh.rssreader.databinding.MainFragmentBinding
 
 class MainFragment : Fragment() {
 
@@ -20,13 +22,13 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.main_fragment, container, false)
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        var binding: MainFragmentBinding =
+            DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+        return binding.root
+    }
 }

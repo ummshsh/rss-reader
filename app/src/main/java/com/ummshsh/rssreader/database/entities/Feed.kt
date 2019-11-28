@@ -1,4 +1,4 @@
-package com.ummshsh.rssreader.database.Entities
+package com.ummshsh.rssreader.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

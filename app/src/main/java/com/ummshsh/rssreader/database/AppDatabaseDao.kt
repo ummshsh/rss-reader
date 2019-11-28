@@ -5,9 +5,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ummshsh.rssreader.database.Entities.Article
-import com.ummshsh.rssreader.database.Entities.Feed
-import com.ummshsh.rssreader.database.Entities.Folder
+import com.ummshsh.rssreader.database.entities.Article
+import com.ummshsh.rssreader.database.entities.Feed
+import com.ummshsh.rssreader.database.entities.Folder
 
 
 //TODO: split them into separate DAOs interfaces later

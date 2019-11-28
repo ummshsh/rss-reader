@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.ummshsh.rssreader.R
-import com.ummshsh.rssreader.RssListAdapter
 import com.ummshsh.rssreader.databinding.MainFragmentBinding
 
 class MainFragment : Fragment() {

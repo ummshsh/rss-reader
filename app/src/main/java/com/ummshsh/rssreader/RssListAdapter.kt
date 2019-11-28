@@ -25,10 +25,14 @@ class RssListAdapter : RecyclerView.Adapter<RssListAdapter.RssHolder>() {
 
     override fun onBindViewHolder(holder: RssHolder, position: Int) {
         val item = listArticles[position]
-        holder.contents.text = item.content.toString() // TODO: just title for now
+        holder.title.text = item.title.toString()
+        holder.content.text = item.content.toString().subSequence(0, 30)
+        holder.link.text = item.link.toString()
     }
 
     class RssHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val contents: TextView = itemView.findViewById(R.id.rss_item_text)
+        val title: TextView = itemView.findViewById(R.id.rss_title)
+        val content: TextView = itemView.findViewById(R.id.rss_contents)
+        val link: TextView = itemView.findViewById(R.id.rss_link)
     }
 }

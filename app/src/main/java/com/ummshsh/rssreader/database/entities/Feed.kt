@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
     tableName = "feeds", foreignKeys = [ForeignKey(
         entity = Folder::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("id"),
+        childColumns = arrayOf("folderId"),
         onDelete = ForeignKey.CASCADE
     )]
 )
@@ -21,5 +21,8 @@ data class Feed(
     val title: String,
 
     @ColumnInfo(name = "link")
-    val link: String
+    val link: String,
+
+    @ColumnInfo(name = "folderId", index = true)
+    val folderId: Long
 )

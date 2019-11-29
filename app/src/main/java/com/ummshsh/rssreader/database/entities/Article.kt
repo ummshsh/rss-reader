@@ -1,15 +1,12 @@
 package com.ummshsh.rssreader.database.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(
     tableName = "articles", foreignKeys = [ForeignKey(
         entity = Feed::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("id"),
+        childColumns = arrayOf("feedId"),
         onDelete = ForeignKey.CASCADE
     )]
 )
@@ -20,7 +17,7 @@ data class Article(
     @ColumnInfo(name = "guid")
     val guid: String,
 
-    @ColumnInfo(name = "feedId")
+    @ColumnInfo(name = "feedId", index = true)
     val feedId: Long = 0L,
 
     @ColumnInfo(name = "title")

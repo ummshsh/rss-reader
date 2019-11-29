@@ -2,12 +2,13 @@ package com.ummshsh.rssreader
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.*
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.ummshsh.rssreader.database.AppDatabase
 import com.ummshsh.rssreader.database.AppDatabaseDao
+import com.ummshsh.rssreader.database.entities.Article
+import com.ummshsh.rssreader.database.entities.Feed
 import com.ummshsh.rssreader.database.entities.Folder
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
@@ -51,14 +52,48 @@ class ExampleInstrumentedTest {
 
     @Test
     @Throws(Exception::class)
-    fun createFolderAndCheckExistance() {
-        val folderName = "Default folder"
-        val folderToAdd = Folder(0, folderName)
-
-        userDao.insert(folderToAdd)
-
+    fun checkCascadeDelete() {
+        // Create folder
+        val folder = Folder(0, "Default folder")
+        var folderId = userDao.insert(folder)
         userDao.getFolders().observeOnce {
-            assertThat(it.first()?.name, equalTo(folderName))
+            assertThat(it.first()?.name, equalTo(folder.name))
         }
+
+        // Create feed
+        val feed = Feed(0, "Fancy feed", "www.www.www", folderId)
+        var feedId = userDao.insert(feed)
+        userDao.getFeeds().observeOnce {
+            assertThat(it.first()?.title, equalTo(feed.title))
+        }
+
+        // Create article
+        val article = Article(
+            0,
+            "guid123",
+            feedId,
+            "Fancy article",
+            "Contents of the article",
+            "Concise descripton"
+        )
+        userDao.insert(article)
+        userDao.getArticles().observeOnce {
+            assertThat(it.first()?.title, equalTo(article.title))
+        }
+
+        // Delete the folder
+//        var deletedItemsCount = userDao.delete(folder)
+//        assertThat(deletedItemsCount, equalTo(1))
+//
+//        // Check that other entities deleted as well
+//        userDao.getFolders().observeOnce {
+//            assertThat(it.size, equalTo(0))
+//        }
+//        userDao.getFeeds().observeOnce {
+//            assertThat(it.size, equalTo(0))
+//        }
+//        userDao.getArticles().observeOnce {
+//            assertThat(it.size, equalTo(0))
+//        }
     }
 }

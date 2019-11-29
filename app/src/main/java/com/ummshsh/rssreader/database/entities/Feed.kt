@@ -2,10 +2,17 @@ package com.ummshsh.rssreader.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-//TODO: add foreign key and cascade delete
-@Entity(tableName = "feeds")
+@Entity(
+    tableName = "feeds", foreignKeys = [ForeignKey(
+        entity = Folder::class,
+        parentColumns = arrayOf("id"),
+        childColumns = arrayOf("id"),
+        onDelete = ForeignKey.CASCADE
+    )]
+)
 data class Feed(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,

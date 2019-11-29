@@ -17,13 +17,13 @@ interface AppDatabaseDao {
 
     // add
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun add(folder: Folder)
+    fun insert(folder: Folder)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun add(article: Article)
+    fun insert(article: Article)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun add(feed: Feed)
+    fun insert(feed: Feed)
 
     //get
     @Query("SELECT * FROM folders WHERE id = :key")
@@ -38,11 +38,11 @@ interface AppDatabaseDao {
 
     //get lists
     @Query("SELECT * FROM folders")
-    fun getFolders(key: Long): LiveData<List<Folder>>
+    fun getFolders(): LiveData<List<Folder>>
 
     @Query("SELECT * FROM articles")
-    fun getArticles(key: Long): LiveData<List<Article>>
+    fun getArticles(): LiveData<List<Article>>
 
     @Query("SELECT * FROM feeds")
-    fun getFeeds(key: Long): LiveData<List<Feed>>
+    fun getFeeds(): LiveData<List<Feed>>
 }

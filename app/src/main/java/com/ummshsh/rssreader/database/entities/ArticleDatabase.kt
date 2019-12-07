@@ -10,7 +10,7 @@ import androidx.room.*
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class Article(
+data class ArticleDatabase(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
 

@@ -1,4 +1,4 @@
-package com.ummshsh.rssreader.logic
+package com.ummshsh.rssreader.network
 
 import com.prof.rssparser.Article
 import com.prof.rssparser.Parser

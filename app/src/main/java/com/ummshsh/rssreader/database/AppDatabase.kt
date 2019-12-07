@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.ummshsh.rssreader.database.entities.Article
+import com.ummshsh.rssreader.database.entities.ArticleDatabase
 import com.ummshsh.rssreader.database.entities.Feed
 import com.ummshsh.rssreader.database.entities.Folder
 
 @Database(
-    entities = [Article::class, Feed::class, Folder::class],
+    entities = [ArticleDatabase::class, Feed::class, Folder::class],
     version = 1,
     exportSchema = false
 )

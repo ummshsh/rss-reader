@@ -7,7 +7,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.ummshsh.rssreader.database.AppDatabase
 import com.ummshsh.rssreader.database.AppDatabaseDao
-import com.ummshsh.rssreader.database.entities.Article
+import com.ummshsh.rssreader.database.entities.ArticleDatabase
 import com.ummshsh.rssreader.database.entities.Feed
 import com.ummshsh.rssreader.database.entities.Folder
 import org.hamcrest.CoreMatchers.equalTo
@@ -68,7 +68,7 @@ class ExampleInstrumentedTest {
         }
 
         // Create article
-        val article = Article(
+        val article = ArticleDatabase(
             0,
             "guid123",
             feedId,

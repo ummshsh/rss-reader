@@ -5,11 +5,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.ummshsh.rssreader.database.AppDatabase
-import com.ummshsh.rssreader.database.AppDatabaseDao
-import com.ummshsh.rssreader.database.entities.ArticleDatabase
-import com.ummshsh.rssreader.database.entities.Feed
-import com.ummshsh.rssreader.database.entities.Folder
+import com.ummshsh.rssreader.database.*
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
 import org.junit.Assert.assertThat
@@ -28,7 +24,7 @@ import java.io.IOException
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
     private lateinit var context: Context
-    private lateinit var userDao: AppDatabaseDao
+    private lateinit var userArticleDao: AppDatabaseArticleDao
     private lateinit var db: AppDatabase
 
     @get:Rule
@@ -41,7 +37,7 @@ class ExampleInstrumentedTest {
             context, AppDatabase::class.java
         ).build()
 
-        userDao = db.appDatabaseDao
+        userArticleDao = db.appDatabaseArticleDao
     }
 
     @After
@@ -55,15 +51,15 @@ class ExampleInstrumentedTest {
     fun checkCascadeDelete() {
         // Create folder
         val folder = Folder(0, "Default folder")
-        var folderId = userDao.insert(folder)
-        userDao.getFolders().observeOnce {
+        var folderId = userArticleDao.insert(folder)
+        userArticleDao.getFolders().observeOnce {
             assertThat(it.first()?.name, equalTo(folder.name))
         }
 
         // Create feed
         val feed = Feed(0, "Fancy feed", "www.www.www", folderId)
-        var feedId = userDao.insert(feed)
-        userDao.getFeeds().observeOnce {
+        var feedId = userArticleDao.insert(feed)
+        userArticleDao.getFeeds().observeOnce {
             assertThat(it.first()?.title, equalTo(feed.title))
         }
 
@@ -76,8 +72,8 @@ class ExampleInstrumentedTest {
             "Contents of the article",
             "Concise descripton"
         )
-        userDao.insert(article)
-        userDao.getArticles().observeOnce {
+        userArticleDao.insert(article)
+        userArticleDao.getArticles().observeOnce {
             assertThat(it.first()?.title, equalTo(article.title))
         }
 

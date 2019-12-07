@@ -24,7 +24,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun getRssFeeds() {
-        viewModelScope.launch {
+        viewModelScope.launch {// TODO: to move this to dispatchers.IO maybe
             val fetcher = RssFetcher()
             val list = fetcher.fetchEntries("https://www.rationalanswer.ru/feed/")
             _articles.value = list

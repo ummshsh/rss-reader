@@ -2,10 +2,6 @@ package com.ummshsh.rssreader.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.ummshsh.rssreader.database.entities.ArticleDatabase
-import com.ummshsh.rssreader.database.entities.Feed
-import com.ummshsh.rssreader.database.entities.Folder
-
 
 //TODO: split them into separate DAOs interfaces later
 //TODO: to think about preferred strategies

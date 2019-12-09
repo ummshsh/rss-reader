@@ -8,8 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.amitshekhar.DebugDB
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.MainFragmentBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainFragment : Fragment() {
 
@@ -26,18 +31,31 @@ class MainFragment : Fragment() {
 
         var binding: MainFragmentBinding =
             DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+
+        val activity = requireNotNull(this.activity) {
+            "You can only access the viewModel after onActivityCreated()"
+        }
+        viewModel = ViewModelProviders
+            .of(this, MainViewModel.Factory(activity.application))
+            .get(MainViewModel::class.java)
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         val adapter = RssListAdapter()
         binding.rssEntriesList.adapter = adapter
-        viewModel.articles.observe(viewLifecycleOwner, Observer {
+        viewModel.articles.observe(this.viewLifecycleOwner, Observer {
             it?.let {
                 adapter.listArticles = it
             }
         })
+
+        //TODO: to delete
+        binding.buttonAddFeed.setOnClickListener {
+            GlobalScope.launch {
+                viewModel.addFeedTesting()
+            }
+        }
 
         return binding.root
     }

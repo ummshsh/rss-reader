@@ -27,7 +27,7 @@ interface AppDatabaseArticleDao {
 @Dao
 interface AppDatabaseFolderDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(folder: Folder): Long
 
     @Query("SELECT * FROM folders")

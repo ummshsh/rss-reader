@@ -18,7 +18,7 @@ data class ArticleDatabase(
     val guid: String,
 
     @ColumnInfo(name = "feedId", index = true)
-    val feedId: Long = 0L,
+    val feedId: Long? = 0L,
 
     @ColumnInfo(name = "title")
     val title: String,
@@ -27,7 +27,10 @@ data class ArticleDatabase(
     val contents: String,
 
     @ColumnInfo(name = "description")
-    val description: String
+    val description: String,
+
+    @ColumnInfo(name = "url")
+    val url: String
 )
 
 @Entity(
@@ -40,7 +43,7 @@ data class ArticleDatabase(
 )
 data class Feed(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
+    val id: Long? = 0L,
 
     @ColumnInfo(name = "title")
     val title: String,
@@ -56,7 +59,7 @@ data class Feed(
 @Entity(tableName = "folders")
 data class Folder(
     @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
+    val id: Long? = 0L,
 
     @ColumnInfo(name = "name")
     val name: String

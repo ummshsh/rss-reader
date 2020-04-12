@@ -1,20 +1,17 @@
 package com.ummshsh.rssreader.ui.main
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.amitshekhar.DebugDB
+import androidx.lifecycle.ViewModelProviders
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.MainFragmentBinding
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainFragment : Fragment() {
 

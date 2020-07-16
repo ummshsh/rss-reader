@@ -1,13 +1,12 @@
 package com.ummshsh.rssreader.repository
 
-import androidx.lifecycle.Observer
-import com.ummshsh.rssreader.database.AppDatabase
+import com.ummshsh.rssreader.database.DbHelper
 import com.ummshsh.rssreader.network.RssFetcher
 import com.ummshsh.rssreader.network.asDatabaseArticles
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ArticlesRepository(private val database: AppDatabase) {
+class ArticlesRepository(private val database: DbHelper) {
 
     val articles = database.articleDao.getArticles()
     val feeds = database.feedDao.getFeeds()

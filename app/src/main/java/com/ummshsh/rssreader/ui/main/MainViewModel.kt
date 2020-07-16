@@ -1,11 +1,9 @@
 package com.ummshsh.rssreader.ui.main
 
 import android.app.Application
+import android.content.ContentValues
 import androidx.lifecycle.*
-import com.ummshsh.rssreader.database.AppDatabase
-import com.ummshsh.rssreader.database.ArticleDatabase
-import com.ummshsh.rssreader.database.Feed
-import com.ummshsh.rssreader.database.Folder
+import com.ummshsh.rssreader.database.*
 import com.ummshsh.rssreader.repository.ArticlesRepository
 import kotlinx.coroutines.*
 
@@ -14,7 +12,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var viewModelJob = Job()
     private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private val database = AppDatabase.getInstance(application)
+    private val database = DbHelper(application)
     private val repository = ArticlesRepository(database)
 
     private val _articles = MutableLiveData<List<ArticleDatabase>>()
@@ -29,14 +27,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun addFeedTesting() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val folderId = database.folderDao.insert(Folder(null, "Default folder"))
-                var feed = Feed(
-                    null,
-                    "Title",
-                    "https://waitbutwhy.com/feed",
-                    folderId
-                )
-                database.feedDao.insert(feed)
+                val values = ContentValues().apply {
+                    put(DatabaseContract.Feed.COLUMN_NAME_TITLE, "WBY")
+                    put(DatabaseContract.Feed.COLUMN_NAME_LINK, "https://waitbutwhy.com/feed")
+                }
+                database
+                    .writableDatabase
+                    .insert(DatabaseContract.Feed.TABLE_NAME, null, values)
             }
         }
     }

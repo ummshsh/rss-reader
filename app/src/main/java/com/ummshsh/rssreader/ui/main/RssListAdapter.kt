@@ -27,7 +27,8 @@ class RssListAdapter : RecyclerView.Adapter<RssListAdapter.RssHolder>() {
     override fun onBindViewHolder(holder: RssHolder, position: Int) {
         val item = listArticles[position]
         holder.title.text = item.title
-        holder.content.text = item.contents.subSequence(0, 30)
+        holder.content.text =
+            if (item.contents.length > 30) item.contents.subSequence(0, 30) else item.contents
         holder.link.text = item.url
     }
 

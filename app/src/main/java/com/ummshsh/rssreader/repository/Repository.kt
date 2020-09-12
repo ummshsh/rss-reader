@@ -15,28 +15,26 @@ class ArticlesRepository(private val database: DbHelper) {
     val articles: LiveData<List<ArticleDatabase>>
         get() = _articles
 
-
-    /**
-     * This one should be called differently
-     *
-     * and should:
-     * 1. Get feeds from database object
-     * 2. Get articles for each feed from database object by
-     *  Getting articles using RssFetcher
-     *  Store them in database
-     * 3. Get all articles from database and update _articles LiveData
-     */
     suspend fun refreshArticles() {
+        // TODO: 13.09.2020 is this a good way to solve network lag before showing something from database?
+        withContext(Dispatchers.IO){
+            _articles.postValue(database.getArticles())
+        }
+
         withContext(Dispatchers.IO) {
             val feeds = database.getFeeds()
-
-            if (!feeds.any()) return@withContext
-
-            for (feed in feeds) { //TODO: check this !! later
-                val articles = RssFetcher().fetchEntries(feed.link).asDatabaseArticles(feed.id)
-                database.insert(articles)
-                _articles.postValue(database.getArticles())
+            if (feeds.any()) {
+                for (feed in feeds) {
+                    val articles = RssFetcher().fetchEntries(feed.link).asDatabaseArticles(feed.id)
+                    database.insert(filterExistingArticlesBeforeInsert(articles))
+                    _articles.postValue(database.getArticles())
+                }
             }
         }
+    }
+
+    private fun filterExistingArticlesBeforeInsert(articles: List<ArticleDatabase>): List<ArticleDatabase> {
+        val foundGuids: List<String> = database.getArticlesWithGuids(articles.map { it.guid })
+        return  articles.filter { !foundGuids.contains(it.guid) }
     }
 }

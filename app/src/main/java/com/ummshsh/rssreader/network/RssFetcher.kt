@@ -11,7 +11,7 @@ class RssFetcher {
     }
 }
 
-fun List<Article>.asDatabaseArticles(feedId: Long): List<ArticleDatabase> {
+fun List<Article>.asDatabaseArticles(feedId: Long?): List<ArticleDatabase> {
     return map {
         ArticleDatabase(
             -1,
@@ -19,7 +19,8 @@ fun List<Article>.asDatabaseArticles(feedId: Long): List<ArticleDatabase> {
             feedId,
             it.title.toString(),
             it.title.toString(),
-            it.description.toString()
+            it.description.toString(),
+            it.link.toString()
         )
     }
 }

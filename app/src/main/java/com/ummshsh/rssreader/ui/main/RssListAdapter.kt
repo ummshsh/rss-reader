@@ -5,12 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.prof.rssparser.Article
 import com.ummshsh.rssreader.R
+import com.ummshsh.rssreader.database.ArticleDatabase
 
 class RssListAdapter : RecyclerView.Adapter<RssListAdapter.RssHolder>() {
 
-    var listArticles = listOf<Article>()
+    var listArticles = listOf<ArticleDatabase>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -26,9 +26,10 @@ class RssListAdapter : RecyclerView.Adapter<RssListAdapter.RssHolder>() {
 
     override fun onBindViewHolder(holder: RssHolder, position: Int) {
         val item = listArticles[position]
-        holder.title.text = item.title.toString()
-        holder.content.text = item.content.toString().subSequence(0, 30)
-        holder.link.text = item.link.toString()
+        holder.title.text = item.title
+        holder.content.text =
+            if (item.contents.length > 30) item.contents.subSequence(0, 30) else item.contents
+        holder.link.text = item.url
     }
 
     class RssHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

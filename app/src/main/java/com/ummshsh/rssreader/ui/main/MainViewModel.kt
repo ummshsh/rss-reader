@@ -15,6 +15,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = DbHelper(application)
     private val repository = ArticlesRepository(database)
 
+    // TODO: 9/12/2020 I have same exact copy of live data in Repository
     private val _articles = MutableLiveData<List<ArticleDatabase>>()
     val articles: LiveData<List<ArticleDatabase>>
         get() = _articles

@@ -36,6 +36,18 @@ class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         onUpgrade(db, oldVersion, newVersion)
     }
 
+    fun getFeeds(): List<Feed> {
+        TODO("Not yet implemented")
+    }
+
+    fun insert(articles: List<ArticleDatabase>) {
+        TODO("Not yet implemented")
+    }
+
+    fun getArticles(): List<ArticleDatabase> {
+        TODO("Not yet implemented")
+    }
+
     companion object {
         const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "FeedReader.db"

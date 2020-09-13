@@ -8,10 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.MainFragmentBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
@@ -47,11 +46,9 @@ class MainFragment : Fragment() {
             }
         })
 
-        //TODO: to delete
-        binding.buttonAddFeed.setOnClickListener {
-            GlobalScope.launch {
-                viewModel.addFeedTesting()
-            }
+        binding.buttonOpenFeedManagement.setOnClickListener {
+            binding.root.findNavController()
+                .navigate(R.id.action_mainFragment_to_feedManagementFragment)
         }
 
         return binding.root

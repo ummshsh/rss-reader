@@ -1,9 +1,9 @@
 package com.ummshsh.rssreader.database
 
 data class ArticleDatabase(
-    val id: Long = 0L,
+    val id: Int = 0,
     val guid: String,
-    val feedId: Long? = 0L,
+    val feedId: Int = 0,
     val title: String,
     val contents: String,
     val description: String,
@@ -11,13 +11,13 @@ data class ArticleDatabase(
 )
 
 data class Feed(
-    val id: Long? = 0L,
+    val id: Int = 0,
     val title: String,
     val link: String,
     val folderId: Long
 )
 
 data class Folder(
-    val id: Long? = 0L,
+    val id: Int = 0,
     val name: String
 )

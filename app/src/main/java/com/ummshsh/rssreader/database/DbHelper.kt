@@ -6,17 +6,16 @@ import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import java.lang.StringBuilder
 
 private const val SQL_CREATE_FEED_TABLE =
     "CREATE TABLE ${DatabaseContract.Feed.TABLE_NAME} (" +
-            "${BaseColumns._ID} LONG PRIMARY KEY," +
+            "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT," +
             "${DatabaseContract.Feed.COLUMN_NAME_TITLE} TEXT," +
             "${DatabaseContract.Feed.COLUMN_NAME_LINK} TEXT)"
 
 private const val SQL_CREATE_ARTICLE_TABLE =
     "CREATE TABLE ${DatabaseContract.Article.TABLE_NAME} (" +
-            "${BaseColumns._ID} LONG PRIMARY KEY, " +
+            "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "${DatabaseContract.Article.COLUMN_NAME_GUID} TEXT, " +
             "${DatabaseContract.Article.COLUMN_NAME_FEED_ID} INTEGER, " +
             "${DatabaseContract.Article.COLUMN_NAME_TITLE} TEXT, " +
@@ -43,6 +42,11 @@ class DbHelper(context: Context) :
         onUpgrade(db, oldVersion, newVersion)
     }
 
+    override fun onConfigure(db: SQLiteDatabase) {
+        db.setForeignKeyConstraintsEnabled(true)
+        super.onConfigure(db)
+    }
+
     fun getFeeds(): List<Feed> {
         val cursor = readableDatabase.query(
             DatabaseContract.Feed.TABLE_NAME,
@@ -57,7 +61,7 @@ class DbHelper(context: Context) :
         val feeds = mutableListOf<Feed>()
         with(cursor) {
             while (moveToNext()) {
-                val itemId = getLong(getColumnIndexOrThrow(BaseColumns._ID))
+                val itemId = getInt(getColumnIndexOrThrow(BaseColumns._ID))
                 val title =
                     getString(getColumnIndexOrThrow(DatabaseContract.Feed.COLUMN_NAME_TITLE))
                 val link = getString(getColumnIndexOrThrow(DatabaseContract.Feed.COLUMN_NAME_LINK))
@@ -104,11 +108,11 @@ class DbHelper(context: Context) :
         val articles = mutableListOf<ArticleDatabase>()
         with(cursor) {
             while (moveToNext()) {
-                val itemId = getLong(getColumnIndexOrThrow(BaseColumns._ID))
+                val itemId = getInt(getColumnIndexOrThrow(BaseColumns._ID))
                 val guid =
                     getString(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_GUID))
                 val feedId =
-                    getLong(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_FEED_ID))
+                    getInt(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_FEED_ID))
                 val title =
                     getString(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_TITLE))
                 val contents =
@@ -165,6 +169,34 @@ class DbHelper(context: Context) :
         }
 
         return foundArticleGuids
+    }
+
+    fun insert(vararg feeds: Feed) {
+        feeds.forEach {
+            val values = ContentValues().apply {
+                put(DatabaseContract.Feed.COLUMN_NAME_TITLE, it.title)
+                put(DatabaseContract.Feed.COLUMN_NAME_LINK, it.link)
+            }
+            writableDatabase
+                .insert(DatabaseContract.Feed.TABLE_NAME, null, values)
+        }
+    }
+
+    fun deleteFeed(id: Int) {
+        // Delete feeds first
+        writableDatabase.delete(
+            DatabaseContract.Article.TABLE_NAME,
+            "${DatabaseContract.Article.COLUMN_NAME_FEED_ID}=?",
+            arrayOf(id.toString())
+        )
+
+        // Delete folder
+        writableDatabase
+            .delete(
+                DatabaseContract.Feed.TABLE_NAME,
+                "${BaseColumns._ID} = ?",
+                arrayOf(id.toString())
+            )
     }
 
     companion object {

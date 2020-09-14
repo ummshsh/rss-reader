@@ -1,25 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/contentPadding"
-    tools:context=".ui.feedmanagement.FeedManagementFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <EditText
-        android:id="@+id/editTextUrl"
+    <data>
+
+        <variable
+            name="viewModelFeed"
+            type="com.ummshsh.rssreader.ui.feedmanagement.FeedManagementViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textUri"
-        android:hint="@string/enter_url"
-        android:text="https://waitbutwhy.com/feed"/>
+        android:orientation="vertical"
+        android:padding="@dimen/contentPadding"
+        tools:context=".ui.feedmanagement.FeedManagementFragment">
 
-    <Button
-        android:id="@+id/buttonAddFeed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_feed" />
+        <EditText
+            android:id="@+id/editTextUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/enter_url"
+            android:importantForAutofill="no"
+            android:inputType="textUri"
+            android:text="@string/https_waitbutwhy_com_feed"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/buttonAddFeed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_feed"
+            app:layout_constraintTop_toBottomOf="@+id/editTextUrl" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/feed_entries_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:scrollbars="none"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonAddFeed" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -3,4 +3,6 @@
     <string name="add_feed">Add feed</string>
     <string name="open_feed_management">Manage feeds</string>
     <string name="enter_url">Enter url</string>
+    <string name="https_waitbutwhy_com_feed">https://waitbutwhy.com/feed</string>
+    <string name="delete">Delete</string>
 </resources>

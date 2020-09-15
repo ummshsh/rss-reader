@@ -139,9 +139,11 @@ class DbHelper(context: Context) :
         return articles
     }
 
-    fun getArticlesWithGuids(guids: List<String>): List<String> {
+    fun getArticlesWithGuids(guidList: List<String>): List<String> {
         val stringBuilder = StringBuilder()
-        guids.forEach { _ -> stringBuilder.append("${DatabaseContract.Article.COLUMN_NAME_GUID} = ? OR ") }
+        repeat(guidList.size){
+            stringBuilder.append("${DatabaseContract.Article.COLUMN_NAME_GUID} = ? OR ")
+        }
         val where = stringBuilder.toString().trimEnd('O', 'R', ' ')
 
 
@@ -152,7 +154,7 @@ class DbHelper(context: Context) :
                 DatabaseContract.Article.COLUMN_NAME_GUID
             ),
             where,
-            guids.toTypedArray(),
+            guidList.toTypedArray(),
             null,
             null,
             null

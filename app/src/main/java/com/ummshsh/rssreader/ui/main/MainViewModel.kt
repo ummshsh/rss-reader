@@ -2,9 +2,12 @@ package com.ummshsh.rssreader.ui.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.ummshsh.rssreader.database.*
-import com.ummshsh.rssreader.repository.ArticlesRepository
-import kotlinx.coroutines.*
+import com.ummshsh.rssreader.database.ArticleDatabase
+import com.ummshsh.rssreader.database.DbHelper
+import com.ummshsh.rssreader.repository.Repository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -12,21 +15,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private val database = DbHelper(application)
-    private val repository = ArticlesRepository(database)
+    private val repository = Repository(database)
 
-    private val _articles = MutableLiveData<List<ArticleDatabase>>()
+    private var _articles = MutableLiveData<List<ArticleDatabase>>()
     val articles: LiveData<List<ArticleDatabase>>
         get() = _articles
 
     init {
-        getArticles()
-    }
-
-    private fun getArticles() {
-        viewModelScope.launch {
-            repository.refreshArticles()
-            _articles.value = repository.articles.value
-        }
+        repository.refreshALl()
+        _articles = repository.articles
     }
 
     override fun onCleared() {
@@ -34,10 +31,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelJob.cancel()
     }
 
-    fun refreshArticles() {
-        viewModelScope.launch {
-            repository.refreshArticles()
-        }
+    fun refreshData() {
+        repository.refreshALl()
     }
 
     class Factory(private val app: Application) : ViewModelProvider.Factory {

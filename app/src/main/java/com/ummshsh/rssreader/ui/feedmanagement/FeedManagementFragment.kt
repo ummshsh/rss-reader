@@ -8,10 +8,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.FeedManagementFragmentBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class FeedManagementFragment : Fragment() {
 
@@ -40,13 +40,13 @@ class FeedManagementFragment : Fragment() {
         binding.lifecycleOwner = this
 
 
-        val adapter = FeedListAdapter(object : FeedListAdapter.OnItemClickListener{
+        val adapter = FeedListAdapter(object : FeedListAdapter.OnItemClickListener {
             override fun clickDeleteOnItem(id: Int) {
                 viewModel.deleteFeed(id)
             }
         })
 
-        binding.feedEntriesList.adapter= adapter
+        binding.feedEntriesList.adapter = adapter
         viewModel.feeds.observe(this.viewLifecycleOwner, Observer {
             it?.let {
                 adapter.listFeeds = it
@@ -60,5 +60,10 @@ class FeedManagementFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshData()
     }
 }

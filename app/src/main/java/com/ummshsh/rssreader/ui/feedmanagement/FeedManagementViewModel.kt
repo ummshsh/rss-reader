@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ummshsh.rssreader.database.DbHelper
 import com.ummshsh.rssreader.database.Feed
-import com.ummshsh.rssreader.repository.ArticlesRepository
 import kotlinx.coroutines.*
+import  com.ummshsh.rssreader.repository.Repository
 
 class FeedManagementViewModel(var application: Application) : ViewModel() {
 
@@ -17,22 +17,15 @@ class FeedManagementViewModel(var application: Application) : ViewModel() {
     private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private val database = DbHelper(application)
-    private val repository = ArticlesRepository(database)
+    private val repository = Repository(database)
 
-    private val _feeds = MutableLiveData<List<Feed>>()
+    private var _feeds = MutableLiveData<List<Feed>>()
     val feeds: LiveData<List<Feed>>
         get() = _feeds
 
     init {
-        getFeeds()
-    }
-
-    private fun getFeeds() {
-        viewModelScope.launch {
-            // TODO: to move this to dispatchers.IO maybe
-            repository.refreshFeeds()
-            _feeds.value = repository.feeds.value
-        }
+        repository.refreshALl()
+        _feeds = repository.feeds
     }
 
     override fun onCleared() {
@@ -40,24 +33,21 @@ class FeedManagementViewModel(var application: Application) : ViewModel() {
         viewModelJob.cancel()
     }
 
-    suspend fun addFeed(url: String) {
+    fun addFeed(url: String) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                repository.addFeed(url, url)
-                getFeeds()
-                repository.refreshArticles()
-            }
+            repository.addFeed(url, url)
         }
     }
 
     fun deleteFeed(id: Int) {
         viewModelScope.launch {
             repository.deleteFeed(id)
-            repository.refreshFeeds()
-            repository.refreshArticles()
-
             Toast.makeText(application, "DELETE $id", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun refreshData() {
+        repository.refreshALl()
     }
 
     class Factory(private val app: Application) : ViewModelProvider.Factory {

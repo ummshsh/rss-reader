@@ -1,6 +1,5 @@
 package com.ummshsh.rssreader.repository
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ummshsh.rssreader.database.ArticleDatabase
 import com.ummshsh.rssreader.database.DbHelper
@@ -28,9 +27,7 @@ class Repository(private val database: DbHelper) {
             return _feeds
         }
 
-    private fun refreshFeeds() {
-        _feeds.postValue(database.getFeeds())
-    }
+    private fun refreshFeeds() = _feeds.postValue(database.getFeeds())
 
     private fun refreshArticles() {
         GlobalScope.launch {
@@ -67,4 +64,8 @@ class Repository(private val database: DbHelper) {
         refreshFeeds()
         refreshArticles()
     }
+
+    fun getArticle(articleId: Int): ArticleDatabase = database.getArticle(articleId)
+
+    fun getFeedName(feedId: Int): String = database.getFeedName(feedId)
 }

@@ -18,7 +18,7 @@ fun List<Article>.asDatabaseArticles(feedId: Int): List<ArticleDatabase> {
             it.guid.toString(),
             feedId,
             it.title.toString(),
-            it.title.toString(),
+            it.content.toString(),
             it.description.toString(),
             it.link.toString()
         )

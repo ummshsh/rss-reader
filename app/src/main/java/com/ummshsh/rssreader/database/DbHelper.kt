@@ -78,10 +78,7 @@ class DbHelper(context: Context) :
                 put(DatabaseContract.Article.COLUMN_NAME_GUID, it.guid)
                 put(DatabaseContract.Article.COLUMN_NAME_FEED_ID, it.feedId)
                 put(DatabaseContract.Article.COLUMN_NAME_TITLE, it.title)
-                put(
-                    DatabaseContract.Article.COLUMN_NAME_CONTENTS,
-                    DatabaseUtils.sqlEscapeString(it.contents)
-                )
+                put(DatabaseContract.Article.COLUMN_NAME_CONTENTS, it.contents)
                 put(DatabaseContract.Article.COLUMN_NAME_DESCRIPTION, it.description)
                 put(DatabaseContract.Article.COLUMN_NAME_URL, it.url)
             }
@@ -141,7 +138,7 @@ class DbHelper(context: Context) :
 
     fun getArticlesWithGuids(guidList: List<String>): List<String> {
         val stringBuilder = StringBuilder()
-        repeat(guidList.size){
+        repeat(guidList.size) {
             stringBuilder.append("${DatabaseContract.Article.COLUMN_NAME_GUID} = ? OR ")
         }
         val where = stringBuilder.toString().trimEnd('O', 'R', ' ')
@@ -199,6 +196,61 @@ class DbHelper(context: Context) :
                 "${BaseColumns._ID} = ?",
                 arrayOf(id.toString())
             )
+    }
+
+    fun getArticle(articleId: Int): ArticleDatabase {
+        lateinit var article: ArticleDatabase
+        var cursor = readableDatabase.query(
+            DatabaseContract.Article.TABLE_NAME,
+            arrayOf(
+                DatabaseContract.Article.COLUMN_NAME_GUID,
+                DatabaseContract.Article.COLUMN_NAME_FEED_ID,
+                DatabaseContract.Article.COLUMN_NAME_TITLE,
+                DatabaseContract.Article.COLUMN_NAME_CONTENTS,
+                DatabaseContract.Article.COLUMN_NAME_DESCRIPTION,
+                DatabaseContract.Article.COLUMN_NAME_URL
+            ),
+            "${BaseColumns._ID} = ?",
+            arrayOf(articleId.toString()),
+            null,
+            null,
+            null
+        )
+
+        with(cursor) {
+            while (moveToNext()) {
+                article = ArticleDatabase(
+                    articleId,
+                    getString(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_GUID)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_FEED_ID)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_TITLE)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_CONTENTS)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_DESCRIPTION)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_URL))
+                )
+            }
+        }
+        return article
+    }
+
+    fun getFeedName(feedId: Int): String {
+        var feedName = ""
+        var cursor = readableDatabase.query(
+            DatabaseContract.Feed.TABLE_NAME,
+            arrayOf(DatabaseContract.Feed.COLUMN_NAME_TITLE),
+            "${BaseColumns._ID} = ?",
+            arrayOf(feedId.toString()),
+            null,
+            null,
+            null
+        )
+
+        with(cursor) {
+            while (moveToNext()) {
+                feedName = getString(getColumnIndexOrThrow(DatabaseContract.Feed.COLUMN_NAME_TITLE))
+            }
+        }
+        return feedName
     }
 
     companion object {

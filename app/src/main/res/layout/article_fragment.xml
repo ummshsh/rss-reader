@@ -25,6 +25,7 @@
 
             <TextView
                 android:id="@+id/textView"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.title}"
@@ -34,6 +35,7 @@
 
             <TextView
                 android:id="@+id/textFeed"
+                android:textStyle="italic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.feed}"
@@ -46,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:lines="100"
+                android:singleLine="false"
                 android:text="@{viewModel.content}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textFeed" />

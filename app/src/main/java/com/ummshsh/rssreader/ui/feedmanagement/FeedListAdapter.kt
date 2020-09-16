@@ -10,7 +10,7 @@ import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.database.Feed
 
 
-class FeedListAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<FeedListAdapter.FeedHolder>() {
+class FeedListAdapter(private var listener: OnFeedDeleteClickListener) : RecyclerView.Adapter<FeedListAdapter.FeedHolder>() {
 
     var listFeeds = listOf<Feed>()
         set(value) {
@@ -42,7 +42,7 @@ class FeedListAdapter(var listener: OnItemClickListener) : RecyclerView.Adapter<
         var deleteButton: Button = itemView.findViewById(R.id.delete_feed)
     }
 
-    interface OnItemClickListener {
+    interface OnFeedDeleteClickListener {
         fun clickDeleteOnItem(id: Int)
     }
 }

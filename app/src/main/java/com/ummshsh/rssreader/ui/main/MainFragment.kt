@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.MainFragmentBinding
+import com.ummshsh.rssreader.ui.articleview.ArticleFragment
 
 class MainFragment : Fragment() {
 
@@ -38,7 +39,13 @@ class MainFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        val adapter = RssListAdapter()
+        val adapter = RssListAdapter(object : RssListAdapter.OnArticleClickListener {
+            override fun clickOnArticle(id: Int) {
+                var action = MainFragmentDirections.actionMainFragmentToArticleFragment(id)
+                binding.root.findNavController()
+                    .navigate(action)
+            }
+        })
         binding.rssEntriesList.adapter = adapter
         viewModel.articles.observe(this.viewLifecycleOwner, Observer {
             it?.let {

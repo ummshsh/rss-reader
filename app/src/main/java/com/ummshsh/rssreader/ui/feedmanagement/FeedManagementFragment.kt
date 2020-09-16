@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.FeedManagementFragmentBinding
 import kotlinx.coroutines.*
@@ -40,7 +39,7 @@ class FeedManagementFragment : Fragment() {
         binding.lifecycleOwner = this
 
 
-        val adapter = FeedListAdapter(object : FeedListAdapter.OnItemClickListener {
+        val adapter = FeedListAdapter(object : FeedListAdapter.OnFeedDeleteClickListener {
             override fun clickDeleteOnItem(id: Int) {
                 viewModel.deleteFeed(id)
             }

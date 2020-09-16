@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.database.ArticleDatabase
 
-class RssListAdapter : RecyclerView.Adapter<RssListAdapter.RssHolder>() {
+class RssListAdapter(private val clickListener: OnArticleClickListener) : RecyclerView.Adapter<RssListAdapter.RssHolder>() {
 
     var listArticles = listOf<ArticleDatabase>()
         set(value) {
@@ -30,11 +30,19 @@ class RssListAdapter : RecyclerView.Adapter<RssListAdapter.RssHolder>() {
         holder.content.text =
             if (item.contents.length > 30) item.contents.subSequence(0, 30) else item.contents
         holder.link.text = item.url
+
+        holder.title.setOnClickListener{
+            clickListener.clickOnArticle(item.id)
+        }
     }
 
     class RssHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.rss_title)
         val content: TextView = itemView.findViewById(R.id.rss_contents)
         val link: TextView = itemView.findViewById(R.id.rss_link)
+    }
+
+    interface OnArticleClickListener{
+        fun clickOnArticle(id:Int)
     }
 }

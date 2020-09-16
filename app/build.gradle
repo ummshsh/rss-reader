@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion 29
@@ -45,13 +46,15 @@ dependencies {
     implementation "android.arch.navigation:navigation-fragment-ktx:1.0.0"
     implementation "android.arch.navigation:navigation-ui-ktx:1.0.0"
 
-    // third party parser
+
+    // Third party parser
     implementation 'com.prof.rssparser:rssparser:2.0.4'
 
-    //Testing
+    // Testing
     androidTestImplementation "android.arch.core:core-testing:1.1.0"
     annotationProcessor "android.arch.lifecycle:compiler:1.1.0"
     implementation "android.arch.lifecycle:livedata:1.1.0"
 
+    // DB debug
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }

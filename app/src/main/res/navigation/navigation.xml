@@ -14,10 +14,25 @@
             app:destination="@id/feedManagementFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_mainFragment_to_articleFragment"
+            app:destination="@id/articleFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="false" />
     </fragment>
     <fragment
         android:id="@+id/feedManagementFragment"
         android:name="com.ummshsh.rssreader.ui.feedmanagement.FeedManagementFragment"
         android:label="feed_management_fragment"
         tools:layout="@layout/feed_management_fragment" />
+    <fragment
+        android:id="@+id/articleFragment"
+        android:name="com.ummshsh.rssreader.ui.articleview.ArticleFragment"
+        android:label="article_fragment"
+        tools:layout="@layout/article_fragment" >
+        <argument
+            android:name="article_id"
+            app:argType="integer" />
+    </fragment>
 </navigation>

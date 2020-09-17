@@ -30,6 +30,8 @@ class Repository(private val database: DbHelper) {
     private fun refreshFeeds() = _feeds.postValue(database.getFeeds())
 
     private fun refreshArticles() {
+        _articles.postValue(database.getArticles())
+
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
                 val feeds = database.getFeeds()

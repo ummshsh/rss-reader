@@ -1,5 +1,5 @@
 package com.ummshsh.rssreader.ui.articleview
-j
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

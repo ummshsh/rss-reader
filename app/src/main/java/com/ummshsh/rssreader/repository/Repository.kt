@@ -57,6 +57,10 @@ class Repository(private val database: DbHelper) {
         refreshALl()
     }
 
+    fun markArticlesRead(isRead: Boolean, vararg articleIds: Int) {
+        database.markArticleAsRead(isRead, *articleIds)
+    }
+
     fun deleteFeed(id: Int) {
         database.deleteFeed(id)
         refreshALl()

@@ -2,7 +2,6 @@ package com.ummshsh.rssreader.database
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
@@ -22,6 +21,7 @@ private const val SQL_CREATE_ARTICLE_TABLE =
             "${DatabaseContract.Article.COLUMN_NAME_CONTENTS} TEXT, " +
             "${DatabaseContract.Article.COLUMN_NAME_DESCRIPTION} TEXT, " +
             "${DatabaseContract.Article.COLUMN_NAME_URL} TEXT, " +
+            "${DatabaseContract.Article.COLUMN_NAME_READ} BOOLEAN NOT NULL CHECK (${DatabaseContract.Article.COLUMN_NAME_READ} IN (0,1)), " +
             "FOREIGN KEY (${DatabaseContract.Article.COLUMN_NAME_FEED_ID}) REFERENCES ${DatabaseContract.Feed.TABLE_NAME}(${BaseColumns._ID}))"
 
 private const val SQL_DELETE_FEED_TABLE = "DROP TABLE IF EXISTS ${DatabaseContract.Feed.TABLE_NAME}"
@@ -81,6 +81,7 @@ class DbHelper(context: Context) :
                 put(DatabaseContract.Article.COLUMN_NAME_CONTENTS, it.contents)
                 put(DatabaseContract.Article.COLUMN_NAME_DESCRIPTION, it.description)
                 put(DatabaseContract.Article.COLUMN_NAME_URL, it.url)
+                put(DatabaseContract.Article.COLUMN_NAME_READ, it.isRead)
             }
             writableDatabase
                 .insert(DatabaseContract.Article.TABLE_NAME, null, values)
@@ -251,6 +252,21 @@ class DbHelper(context: Context) :
             }
         }
         return feedName
+    }
+
+    fun markArticleAsRead(isRead: Boolean, vararg articleIds: Int) {
+        articleIds.forEach {
+            val values = ContentValues().apply {
+                put(DatabaseContract.Article.COLUMN_NAME_READ, isRead)
+            }
+            writableDatabase.update(
+                DatabaseContract.Article.TABLE_NAME,
+                values,
+                "${BaseColumns._ID} = ?",
+                arrayOf(it.toString())
+            )
+        }
+
     }
 
     companion object {

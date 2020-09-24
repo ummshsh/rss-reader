@@ -11,6 +11,7 @@ class DatabaseContract {
         const val COLUMN_NAME_DESCRIPTION = "description"
         const val COLUMN_NAME_CONTENTS = "contents"
         const val COLUMN_NAME_URL = "url"
+        const val COLUMN_NAME_READ = "read"
     }
 
     object Feed : BaseColumns {

@@ -1,47 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/articleScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:layout_editor_absoluteX="16dp"
     tools:layout_editor_absoluteY="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/articleConstraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/contentPadding"
-        tools:context=".ui.articleview.ArticleFragment">
-
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Title" />
-
-        <TextView
-            android:id="@+id/textFeed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Feed Name"
-            android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView"
-            tools:text="Feed name" />
-
-        <TextView
-            android:id="@+id/textContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:singleLine="false"
-            android:text="Contents"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textFeed" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        tools:context=".ui.articleview.ArticleFragment" />
 </ScrollView>

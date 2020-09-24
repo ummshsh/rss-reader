@@ -1,9 +1,12 @@
 package com.ummshsh.rssreader.ui.articleview
-
+j
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
@@ -30,8 +33,13 @@ class ArticleFragment : Fragment() {
         viewModel = ViewModelProviders
             .of(this, ArticleViewModel.Factory(args.articleId, activity.application))
             .get(ArticleViewModel::class.java)
-        
 
-        return inflater.inflate(R.layout.article_fragment,container,false)
+        var text = TextView(context)
+        text.text = HtmlCompat.fromHtml(viewModel.content, HtmlCompat.FROM_HTML_MODE_LEGACY);
+
+        var view = inflater.inflate(R.layout.article_fragment, container, false)
+        view.findViewById<ConstraintLayout>(R.id.articleConstraintLayout).addView(text)
+
+        return view
     }
 }

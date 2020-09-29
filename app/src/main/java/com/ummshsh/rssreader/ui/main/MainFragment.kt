@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.MainFragmentBinding
 
@@ -69,7 +70,12 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_mark_all_read -> viewModel.markArticlesAsRead()
+            R.id.action_mark_all_read -> {
+                viewModel.markArticlesAsRead(true)
+                Snackbar.make(root, "All marked as read", Snackbar.LENGTH_LONG)
+                    .setAction("Undo") { _ -> viewModel.markArticlesAsRead(false) }
+                    .show()
+            }
             R.id.action_toggle_read -> viewModel.toggleOnlyUnreadArticles()
             R.id.action_toggle_sorting -> viewModel.toggleSorting()
         }

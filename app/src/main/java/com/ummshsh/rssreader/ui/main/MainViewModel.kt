@@ -39,11 +39,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         repository.refreshALl()
     }
 
-    fun markArticlesAsRead() {
+    fun markArticlesAsRead(isRead: Boolean): List<Int> {
         var articles = articles.value!!.map { it.id }
-        repository.markArticlesRead(true, *articles.toIntArray())
-
-        //TODO: popup snackbar to undo
+        repository.markArticlesRead(isRead, *articles.toIntArray())
+        return articles
     }
 
     fun toggleOnlyUnreadArticles() {

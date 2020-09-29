@@ -1,9 +1,7 @@
 package com.ummshsh.rssreader.ui.main
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -11,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.MainFragmentBinding
-import com.ummshsh.rssreader.ui.articleview.ArticleFragment
+
 
 class MainFragment : Fragment() {
 
@@ -20,6 +18,12 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var root: View
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +32,7 @@ class MainFragment : Fragment() {
 
         var binding: MainFragmentBinding =
             DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
+
 
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
@@ -58,7 +63,22 @@ class MainFragment : Fragment() {
                 .navigate(R.id.action_mainFragment_to_feedManagementFragment)
         }
 
-        return binding.root
+        root = binding.root
+        return root
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_mark_all_read -> viewModel.markArticlesAsRead()
+            R.id.action_toggle_read -> viewModel.toggleOnlyUnreadArticles()
+            R.id.action_toggle_sorting -> viewModel.toggleSorting()
+        }
+        return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_main, menu)
     }
 
     override fun onResume() {

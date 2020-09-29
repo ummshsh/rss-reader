@@ -5,4 +5,7 @@
     <string name="enter_url">Enter url</string>
     <string name="https_waitbutwhy_com_feed">https://waitbutwhy.com/feed</string>
     <string name="delete">Delete</string>
+    <string name="mark_all_as_read">Mark all as read</string>
+    <string name="sorting">Sorting</string>
+    <string name="visible">Visible</string>
 </resources>

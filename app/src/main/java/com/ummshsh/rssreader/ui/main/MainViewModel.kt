@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.ummshsh.rssreader.database.ArticleDatabase
 import com.ummshsh.rssreader.database.DbHelper
+import com.ummshsh.rssreader.model.ArticleStatus
 import com.ummshsh.rssreader.repository.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -14,6 +15,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private var viewModelJob = Job()
     private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    private var displayUnread = true
+    private var displayAscending = true
     private val database = DbHelper(application)
     private val repository = Repository(database)
 
@@ -22,6 +25,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         get() = _articles
 
     init {
+        toggleOnlyUnreadArticles()
         repository.refreshALl()
         _articles = repository.articles
     }
@@ -33,6 +37,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun refreshData() {
         repository.refreshALl()
+    }
+
+    fun markArticlesAsRead() {
+        var articles = articles.value!!.map { it.id }
+        repository.markArticlesRead(true, *articles.toIntArray())
+
+        //TODO: popup snackbar to undo
+    }
+
+    fun toggleOnlyUnreadArticles() {
+        displayUnread = !displayUnread
+        repository.exposeOnly(if (displayUnread) ArticleStatus.Unread else ArticleStatus.All)
+    }
+
+    fun toggleSorting() {
+        displayAscending = !displayAscending
+        repository.exposeAscending(displayAscending)
     }
 
     class Factory(private val app: Application) : ViewModelProvider.Factory {

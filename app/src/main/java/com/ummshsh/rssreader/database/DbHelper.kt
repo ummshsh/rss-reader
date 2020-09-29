@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
+import com.ummshsh.rssreader.model.ArticleStatus
 
 private const val SQL_CREATE_FEED_TABLE =
     "CREATE TABLE ${DatabaseContract.Feed.TABLE_NAME} (" +
@@ -88,7 +89,14 @@ class DbHelper(context: Context) :
         }
     }
 
-    fun getArticles(): List<ArticleDatabase> {
+    fun getArticles(status: ArticleStatus, ascending: Boolean): List<ArticleDatabase> {
+        val selection = when (status) {
+            ArticleStatus.All -> ""
+            ArticleStatus.Read -> "${DatabaseContract.Article.COLUMN_NAME_READ} = 1"
+            ArticleStatus.Unread -> "${DatabaseContract.Article.COLUMN_NAME_READ} = 0"
+        }
+        val orderBy = "${BaseColumns._ID} " + if (ascending) "ASC" else "DESC"
+
         val cursor = readableDatabase.query(
             DatabaseContract.Article.TABLE_NAME,
             arrayOf(
@@ -100,7 +108,7 @@ class DbHelper(context: Context) :
                 DatabaseContract.Article.COLUMN_NAME_DESCRIPTION,
                 DatabaseContract.Article.COLUMN_NAME_URL
             ),
-            null, null, null, null, null
+            selection, null, null, null, orderBy
         )
 
         val articles = mutableListOf<ArticleDatabase>()

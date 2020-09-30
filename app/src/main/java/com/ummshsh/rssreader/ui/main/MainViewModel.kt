@@ -26,6 +26,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         toggleOnlyUnreadArticles()
+        toggleSorting()
         repository.refreshALl()
         _articles = repository.articles
     }

@@ -5,7 +5,7 @@
 
 # Prerequisites: appropriate project structure should exist in the repository.
 
-image: mingc/android-build-box:latest
+image: bitbucketpipelines/android-ci-image
 
 pipelines:
   default:
@@ -15,7 +15,7 @@ pipelines:
           caches:
             - gradle
           script:
-            - gradle test
+             - ./gradlew test
           after-script:
             - pipe: atlassian/checkstyle-report:0.2.0
       - step:

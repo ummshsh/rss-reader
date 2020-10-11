@@ -166,7 +166,6 @@ class DbHelper(context: Context) :
             null
         )
 
-
         val foundArticleGuids = mutableListOf<String>()
         with(cursor) {
             while (moveToNext()) {

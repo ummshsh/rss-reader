@@ -1,4 +1,4 @@
-package com.ummshsh.rssreader.ui.feedmanagement
+package com.ummshsh.rssreader
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.ummshsh.rssreader.R
+import com.ummshsh.rssreader.database.ArticleDatabase
 import com.ummshsh.rssreader.database.Feed
+import com.ummshsh.rssreader.ui.feedmanagement.FeedListAdapter
+import com.ummshsh.rssreader.ui.main.RssListAdapter
 
-
-class FeedListAdapter(private var listener: OnFeedDeleteClickListener) :
-    RecyclerView.Adapter<FeedListAdapter.FeedHolder>() {
+class DrawerFeedListAdapter(private var listener: OnFeedDeleteClickListener) :
+    RecyclerView.Adapter<DrawerFeedListAdapter.FeedHolder>() {
 
     var listFeeds = listOf<Feed>()
         set(value) {

@@ -37,7 +37,6 @@ class MainFragment : Fragment() {
         var binding: MainFragmentBinding =
             DataBindingUtil.inflate(inflater, R.layout.main_fragment, container, false)
 
-
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }

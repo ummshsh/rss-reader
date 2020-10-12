@@ -7,9 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.MainFragmentBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class MainFragment : Fragment() {
@@ -58,11 +61,6 @@ class MainFragment : Fragment() {
                 adapter.listArticles = it
             }
         })
-
-        binding.buttonOpenFeedManagement.setOnClickListener {
-            binding.root.findNavController()
-                .navigate(R.id.action_mainFragment_to_feedManagementFragment)
-        }
 
         root = binding.root
         return root

@@ -31,10 +31,19 @@
             app:navGraph="@navigation/navigation" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:headerLayout="@layout/header_layout" />
+        app:headerLayout="@layout/header_layout">
+
+        <Button
+            android:id="@+id/manage_feeds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/open_feed_management" />
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

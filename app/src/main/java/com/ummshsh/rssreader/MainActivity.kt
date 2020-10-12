@@ -1,7 +1,10 @@
 package com.ummshsh.rssreader
 
 import android.os.Bundle
+import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -14,6 +17,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.main_activity.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +45,18 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         findViewById<NavigationView>(R.id.navigationView).setupWithNavController(navController)
+        addSubMenuItems()
+
+        findViewById<Button>(R.id.manage_feeds).setOnClickListener {
+            navController.navigate(R.id.action_mainFragment_to_feedManagementFragment)
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+    }
+
+    private fun addSubMenuItems() {
+        findViewById<NavigationView>(R.id.navigationView).menu.add("One")
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -17,20 +17,6 @@
         android:orientation="vertical"
         tools:context=".ui.main.MainFragment">
 
-<!--        <include-->
-<!--            layout="@layout/main_toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
-
-        <Button
-            android:id="@+id/button_open_feed_management"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/open_feed_management" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rss_entries_list"
             android:layout_width="match_parent"

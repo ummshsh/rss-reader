@@ -9,11 +9,12 @@ import com.ummshsh.rssreader.repository.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var viewModelJob = Job()
-    private val viewModelScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private val viewModelScope = CoroutineScope(Dispatchers.IO + viewModelJob)
 
     private var displayUnread = true
     private var displayAscending = true
@@ -42,7 +43,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun markArticlesAsRead(isRead: Boolean): List<Int> {
         var articles = articles.value!!.map { it.id }
-        repository.markArticlesRead(isRead, *articles.toIntArray())
+        viewModelScope.launch {
+            repository.markArticlesRead(isRead, *articles.toIntArray())
+        }
         return articles
     }
 

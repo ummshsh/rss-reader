@@ -8,4 +8,6 @@
     <string name="mark_all_as_read">Mark all as read</string>
     <string name="sorting">Sorting</string>
     <string name="visible">Visible</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
 </resources>

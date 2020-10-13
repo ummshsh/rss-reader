@@ -16,6 +16,7 @@ class Repository(private val database: DbHelper) {
 
     private var onlyArticlesStatus: ArticleStatus = ArticleStatus.All
     private var ascending: Boolean = false
+    private var feedId: Int = -1
 
     private val _articles = MutableLiveData<List<ArticleDatabase>>()
     val articles: MutableLiveData<List<ArticleDatabase>>
@@ -34,7 +35,7 @@ class Repository(private val database: DbHelper) {
     private fun refreshFeeds() = _feeds.postValue(database.getFeeds())
 
     private fun refreshArticles() {
-        _articles.postValue(database.getArticles(onlyArticlesStatus, ascending))
+        _articles.postValue(database.getArticles(onlyArticlesStatus, ascending, feedId))
 
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
@@ -46,7 +47,7 @@ class Repository(private val database: DbHelper) {
                         database.insert(filterExistingArticlesBeforeInsert(articles))
                     }
                 }
-                _articles.postValue(database.getArticles(onlyArticlesStatus, ascending))
+                _articles.postValue(database.getArticles(onlyArticlesStatus, ascending, feedId))
             }
         }
     }
@@ -87,5 +88,10 @@ class Repository(private val database: DbHelper) {
     fun exposeAscending(ascending: Boolean) {
         this.ascending = ascending
         refreshArticles()
+    }
+
+    fun showOnlyFeed(feedId: Int) {
+        this.feedId = feedId
+        this.refreshArticles()
     }
 }

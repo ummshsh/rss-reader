@@ -89,12 +89,20 @@ class DbHelper(context: Context) :
         }
     }
 
-    fun getArticles(status: ArticleStatus, ascending: Boolean): List<ArticleDatabase> {
-        val selection = when (status) {
+    fun getArticles(status: ArticleStatus, ascending: Boolean, feedId: Int): List<ArticleDatabase> {
+        val selectionReadUnread = when (status) {
             ArticleStatus.All -> ""
             ArticleStatus.Read -> "${DatabaseContract.Article.COLUMN_NAME_READ} = 1"
             ArticleStatus.Unread -> "${DatabaseContract.Article.COLUMN_NAME_READ} = 0"
         }
+
+        val selectionFeed =
+            if (feedId < 0) "" else "${DatabaseContract.Article.COLUMN_NAME_FEED_ID} = $feedId"
+
+        var fullSelection =
+            arrayOf(selectionReadUnread, selectionFeed).filter { it.isNotEmpty() }
+                .joinToString(separator = " AND ")
+
         val orderBy = "${BaseColumns._ID} " + if (ascending) "ASC" else "DESC"
 
         val cursor = readableDatabase.query(
@@ -108,7 +116,11 @@ class DbHelper(context: Context) :
                 DatabaseContract.Article.COLUMN_NAME_DESCRIPTION,
                 DatabaseContract.Article.COLUMN_NAME_URL
             ),
-            selection, null, null, null, orderBy
+            fullSelection,
+            null,
+            null,
+            null,
+            orderBy
         )
 
         val articles = mutableListOf<ArticleDatabase>()

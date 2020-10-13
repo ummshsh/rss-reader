@@ -11,7 +11,7 @@ import com.ummshsh.rssreader.database.Feed
 import com.ummshsh.rssreader.ui.feedmanagement.FeedListAdapter
 import com.ummshsh.rssreader.ui.main.RssListAdapter
 
-class DrawerFeedListAdapter(private var listener: OnFeedDeleteClickListener) :
+class DrawerFeedListAdapter(private var listener: OnFeedClickListener) :
     RecyclerView.Adapter<DrawerFeedListAdapter.FeedHolder>() {
 
     var listFeeds = listOf<Feed>()
@@ -24,27 +24,24 @@ class DrawerFeedListAdapter(private var listener: OnFeedDeleteClickListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.feed_item_view, parent, false)
+        val view = layoutInflater.inflate(R.layout.feed_item_drawer_view, parent, false)
         return FeedHolder(view)
     }
 
     override fun onBindViewHolder(holder: FeedHolder, position: Int) {
         val item = listFeeds[position]
         holder.title.text = item.title
-        holder.url.text = item.link
 
-        holder.deleteButton.setOnClickListener {
-            listener.clickDeleteOnItem(item.id)
+        holder.title.setOnClickListener {
+            listener.clickFeed(item.id)
         }
     }
 
     class FeedHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.feed_title)
-        val url: TextView = itemView.findViewById(R.id.feed_url)
-        var deleteButton: Button = itemView.findViewById(R.id.delete_feed)
     }
 
-    interface OnFeedDeleteClickListener {
-        fun clickDeleteOnItem(id: Int)
+    interface OnFeedClickListener {
+        fun clickFeed(id: Int)
     }
 }

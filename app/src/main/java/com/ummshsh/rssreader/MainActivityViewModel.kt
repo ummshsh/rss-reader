@@ -32,6 +32,10 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         viewModelJob.cancel()
     }
 
+    fun refreshFeeds(){
+        repository.refreshALl()
+    }
+
     class Factory(private val app: Application) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(MainActivityViewModel::class.java)) {

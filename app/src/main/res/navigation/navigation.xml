@@ -35,4 +35,5 @@
             android:name="article_id"
             app:argType="integer" />
     </fragment>
+
 </navigation>

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.FeedManagementFragmentBinding
@@ -31,8 +32,7 @@ class FeedManagementFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        viewModel = ViewModelProviders
-            .of(this, FeedManagementViewModel.Factory(activity.application))
+        viewModel = ViewModelProvider(this, FeedManagementViewModel.Factory(activity.application))
             .get(FeedManagementViewModel::class.java)
 
         binding.viewModelFeed = viewModel

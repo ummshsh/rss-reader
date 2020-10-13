@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.ummshsh.rssreader.R
@@ -30,9 +31,9 @@ class ArticleFragment : Fragment() {
             "You can only access the viewModel after onActivityCreated()"
         }
 
-        viewModel = ViewModelProviders
-            .of(this, ArticleViewModel.Factory(args.articleId, activity.application))
-            .get(ArticleViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, ArticleViewModel.Factory(args.articleId, activity.application))
+                .get(ArticleViewModel::class.java)
 
         var text = TextView(context)
         text.text = HtmlCompat.fromHtml(viewModel.content, HtmlCompat.FROM_HTML_MODE_LEGACY);

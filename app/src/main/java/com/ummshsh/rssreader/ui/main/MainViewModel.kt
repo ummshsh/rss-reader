@@ -1,9 +1,11 @@
 package com.ummshsh.rssreader.ui.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.ummshsh.rssreader.database.ArticleDatabase
 import com.ummshsh.rssreader.database.DbHelper
+import com.ummshsh.rssreader.database.Feed
 import com.ummshsh.rssreader.model.ArticleStatus
 import com.ummshsh.rssreader.repository.Repository
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +20,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private var displayUnread = true
     private var displayAscending = true
+    private var feedId: Int = -1
+
     private val database = DbHelper(application)
     private val repository = Repository(database)
 
@@ -25,11 +29,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val articles: LiveData<List<ArticleDatabase>>
         get() = _articles
 
+    private var _feeds = MutableLiveData<List<Feed>>()
+    val feeds: LiveData<List<Feed>>
+        get() = _feeds
+
     init {
+        Log.i("MainViewModel","Created + ${this.toString()}")
         toggleOnlyUnreadArticles()
         toggleSorting()
         repository.refreshALl()
         _articles = repository.articles
+        _feeds = repository.feeds
     }
 
     override fun onCleared() {
@@ -57,6 +67,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun toggleSorting() {
         displayAscending = !displayAscending
         repository.exposeAscending(displayAscending)
+    }
+
+    fun showOnlyFeed(feedId: Int) {
+        this.feedId = feedId
+        repository.showOnlyFeed(this.feedId)
     }
 
     class Factory(private val app: Application) : ViewModelProvider.Factory {

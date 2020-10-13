@@ -5,6 +5,7 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.google.android.material.navigation.NavigationView
@@ -40,8 +41,7 @@ class MainFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        viewModel = ViewModelProviders
-            .of(this, MainViewModel.Factory(activity.application))
+        viewModel = ViewModelProvider(activity, MainViewModel.Factory(activity.application))
             .get(MainViewModel::class.java)
 
         binding.viewModel = viewModel
@@ -82,10 +82,5 @@ class MainFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_main, menu)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.refreshData()
     }
 }

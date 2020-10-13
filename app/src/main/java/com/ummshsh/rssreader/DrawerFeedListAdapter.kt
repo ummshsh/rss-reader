@@ -3,18 +3,14 @@ package com.ummshsh.rssreader
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.ummshsh.rssreader.database.ArticleDatabase
-import com.ummshsh.rssreader.database.Feed
-import com.ummshsh.rssreader.ui.feedmanagement.FeedListAdapter
-import com.ummshsh.rssreader.ui.main.RssListAdapter
+import com.ummshsh.rssreader.database.FeedDatabase
 
 class DrawerFeedListAdapter(private var listener: OnFeedClickListener) :
     RecyclerView.Adapter<DrawerFeedListAdapter.FeedHolder>() {
 
-    var listFeeds = listOf<Feed>()
+    var listFeeds = listOf<FeedDatabase>()
         set(value) {
             field = value
             notifyDataSetChanged()

@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.ummshsh.rssreader.database.ArticleDatabase
 import com.ummshsh.rssreader.database.DbHelper
-import com.ummshsh.rssreader.database.Feed
+import com.ummshsh.rssreader.model.ArticleLight
 import com.ummshsh.rssreader.model.ArticleStatus
 import com.ummshsh.rssreader.repository.Repository
 import kotlinx.coroutines.CoroutineScope
@@ -25,8 +25,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = DbHelper(application)
     private val repository = Repository(database)
 
-    private var _articles = MutableLiveData<List<ArticleDatabase>>()
-    val articles: LiveData<List<ArticleDatabase>>
+    private var _articles = MutableLiveData<List<ArticleLight>>()
+    val articles: LiveData<List<ArticleLight>>
         get() = _articles
 
     init {

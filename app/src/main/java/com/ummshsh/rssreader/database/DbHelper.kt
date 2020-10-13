@@ -48,7 +48,7 @@ class DbHelper(context: Context) :
         super.onConfigure(db)
     }
 
-    fun getFeeds(): List<Feed> {
+    fun getFeeds(): List<FeedDatabase> {
         val cursor = readableDatabase.query(
             DatabaseContract.Feed.TABLE_NAME,
             arrayOf(
@@ -59,14 +59,14 @@ class DbHelper(context: Context) :
             null, null, null, null, null
         )
 
-        val feeds = mutableListOf<Feed>()
+        val feeds = mutableListOf<FeedDatabase>()
         with(cursor) {
             while (moveToNext()) {
                 val itemId = getInt(getColumnIndexOrThrow(BaseColumns._ID))
                 val title =
                     getString(getColumnIndexOrThrow(DatabaseContract.Feed.COLUMN_NAME_TITLE))
                 val link = getString(getColumnIndexOrThrow(DatabaseContract.Feed.COLUMN_NAME_LINK))
-                feeds.add(Feed(itemId, title, link, 0))
+                feeds.add(FeedDatabase(itemId, title, link, 0))
             }
         }
 
@@ -89,6 +89,7 @@ class DbHelper(context: Context) :
         }
     }
 
+    // TODO: Return light article instead
     fun getArticles(status: ArticleStatus, ascending: Boolean, feedId: Int): List<ArticleDatabase> {
         val selectionReadUnread = when (status) {
             ArticleStatus.All -> ""
@@ -194,7 +195,7 @@ class DbHelper(context: Context) :
         return foundArticleGuids
     }
 
-    fun insert(vararg feeds: Feed) {
+    fun insert(vararg feeds: FeedDatabase) {
         feeds.forEach {
             val values = ContentValues().apply {
                 put(DatabaseContract.Feed.COLUMN_NAME_TITLE, it.title)

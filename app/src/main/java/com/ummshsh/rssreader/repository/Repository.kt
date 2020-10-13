@@ -3,7 +3,8 @@ package com.ummshsh.rssreader.repository
 import androidx.lifecycle.MutableLiveData
 import com.ummshsh.rssreader.database.ArticleDatabase
 import com.ummshsh.rssreader.database.DbHelper
-import com.ummshsh.rssreader.database.Feed
+import com.ummshsh.rssreader.database.FeedDatabase
+import com.ummshsh.rssreader.model.ArticleLight
 import com.ummshsh.rssreader.model.ArticleStatus
 import com.ummshsh.rssreader.network.RssFetcher
 import com.ummshsh.rssreader.network.asDatabaseArticles
@@ -18,15 +19,15 @@ class Repository(private val database: DbHelper) {
     private var ascending: Boolean = false
     private var feedId: Int = -1
 
-    private val _articles = MutableLiveData<List<ArticleDatabase>>()
-    val articles: MutableLiveData<List<ArticleDatabase>>
+    private val _articles = MutableLiveData<List<ArticleLight>>()
+    val articles: MutableLiveData<List<ArticleLight>>
         get() {
             refreshArticles()
             return _articles
         }
 
-    private val _feeds = MutableLiveData<List<Feed>>()
-    val feeds: MutableLiveData<List<Feed>>
+    private val _feeds = MutableLiveData<List<FeedDatabase>>()
+    val feeds: MutableLiveData<List<FeedDatabase>>
         get() {
             refreshFeeds()
             return _feeds
@@ -35,7 +36,9 @@ class Repository(private val database: DbHelper) {
     private fun refreshFeeds() = _feeds.postValue(database.getFeeds())
 
     private fun refreshArticles() {
-        _articles.postValue(database.getArticles(onlyArticlesStatus, ascending, feedId))
+        _articles.postValue(
+            database.getArticles(onlyArticlesStatus, ascending, feedId).asLightArticles()
+        )
 
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
@@ -47,7 +50,9 @@ class Repository(private val database: DbHelper) {
                         database.insert(filterExistingArticlesBeforeInsert(articles))
                     }
                 }
-                _articles.postValue(database.getArticles(onlyArticlesStatus, ascending, feedId))
+                _articles.postValue(
+                    database.getArticles(onlyArticlesStatus, ascending, feedId).asLightArticles()
+                )
             }
         }
     }
@@ -58,7 +63,7 @@ class Repository(private val database: DbHelper) {
     }
 
     fun addFeed(title: String, url: String) {
-        database.insert(Feed(-1, title, url, -1))
+        database.insert(FeedDatabase(-1, title, url, -1))
         refreshALl()
     }
 
@@ -93,5 +98,21 @@ class Repository(private val database: DbHelper) {
     fun showOnlyFeed(feedId: Int) {
         this.feedId = feedId
         this.refreshArticles()
+    }
+}
+
+private fun List<ArticleDatabase>.asLightArticles(): List<ArticleLight> {
+    return map {
+        ArticleLight(
+            it.id,
+            it.guid,
+            it.feedId,
+            it.title,
+            if (it.contents.length > 30) it.contents.subSequence(0, 30).toString() else it.contents,
+            it.description,
+            it.url,
+            it.isRead
+        )
+
     }
 }

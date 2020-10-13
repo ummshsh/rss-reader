@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.database.ArticleDatabase
+import com.ummshsh.rssreader.model.ArticleLight
 
 class RssListAdapter(private val clickListener: OnArticleClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -14,7 +15,7 @@ class RssListAdapter(private val clickListener: OnArticleClickListener) :
     private val typeRead = 1
     private val typeUnread = 2
 
-    var listArticles = listOf<ArticleDatabase>()
+    var listArticles = listOf<ArticleLight>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -42,8 +43,7 @@ class RssListAdapter(private val clickListener: OnArticleClickListener) :
 
             read.title.text = item.title
             read.source.text = item.feedId.toString()
-            read.content.text =
-                if (item.contents.length > 30) item.contents.subSequence(0, 30) else item.contents
+            read.content.text =item.contentsShort
             read.link.text = item.url
 
             read.title.setOnClickListener {
@@ -54,8 +54,7 @@ class RssListAdapter(private val clickListener: OnArticleClickListener) :
 
             unread.title.text = item.title
             unread.source.text = item.feedId.toString()
-            unread.content.text =
-                if (item.contents.length > 30) item.contents.subSequence(0, 30) else item.contents
+            unread.content.text =item.contentsShort
             unread.link.text = item.url
 
             unread.title.setOnClickListener {

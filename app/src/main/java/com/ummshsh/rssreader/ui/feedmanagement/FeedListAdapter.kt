@@ -7,13 +7,13 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ummshsh.rssreader.R
-import com.ummshsh.rssreader.database.Feed
+import com.ummshsh.rssreader.database.FeedDatabase
 
 
 class FeedListAdapter(private var listener: OnFeedDeleteClickListener) :
     RecyclerView.Adapter<FeedListAdapter.FeedHolder>() {
 
-    var listFeeds = listOf<Feed>()
+    var listFeeds = listOf<FeedDatabase>()
         set(value) {
             field = value
             notifyDataSetChanged()

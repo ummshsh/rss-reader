@@ -11,14 +11,14 @@ data class ArticleDatabase(
     val isRead: Boolean = false
 )
 
-data class Feed(
+data class FeedDatabase(
     val id: Int = 0,
     val title: String,
     val link: String,
     val folderId: Long
 )
 
-data class Folder(
+data class FolderDatabase(
     val id: Int = 0,
     val name: String
 )

@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ummshsh.rssreader.database.DbHelper
-import com.ummshsh.rssreader.database.Feed
+import com.ummshsh.rssreader.database.FeedDatabase
 import kotlinx.coroutines.*
 import  com.ummshsh.rssreader.repository.Repository
 
@@ -19,8 +19,8 @@ class FeedManagementViewModel(var application: Application) : ViewModel() {
     private val database = DbHelper(application)
     private val repository = Repository(database)
 
-    private var _feeds = MutableLiveData<List<Feed>>()
-    val feeds: LiveData<List<Feed>>
+    private var _feeds = MutableLiveData<List<FeedDatabase>>()
+    val feeds: LiveData<List<FeedDatabase>>
         get() = _feeds
 
     init {
@@ -35,6 +35,7 @@ class FeedManagementViewModel(var application: Application) : ViewModel() {
 
     fun addFeed(url: String) {
         viewModelScope.launch {
+            // fetch feed name first
             repository.addFeed(url, url)
         }
     }

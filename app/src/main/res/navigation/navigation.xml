@@ -25,7 +25,12 @@
         android:id="@+id/feedManagementFragment"
         android:name="com.ummshsh.rssreader.ui.feedmanagement.FeedManagementFragment"
         android:label="Feed management"
-        tools:layout="@layout/feed_management_fragment" />
+        tools:layout="@layout/feed_management_fragment" >
+        <argument
+            android:name="feed_to_add"
+            app:argType="string"
+            android:defaultValue="https://waitbutwhy.com/feed" />
+    </fragment>
     <fragment
         android:id="@+id/articleFragment"
         android:name="com.ummshsh.rssreader.ui.articleview.ArticleFragment"

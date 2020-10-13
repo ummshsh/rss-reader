@@ -29,26 +29,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val articles: LiveData<List<ArticleDatabase>>
         get() = _articles
 
-    private var _feeds = MutableLiveData<List<Feed>>()
-    val feeds: LiveData<List<Feed>>
-        get() = _feeds
-
     init {
         Log.i("MainViewModel","Created + ${this.toString()}")
         toggleOnlyUnreadArticles()
         toggleSorting()
         repository.refreshALl()
         _articles = repository.articles
-        _feeds = repository.feeds
     }
 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
-    }
-
-    fun refreshData() {
-        repository.refreshALl()
     }
 
     fun markArticlesAsRead(isRead: Boolean): List<Int> {

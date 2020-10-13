@@ -9,13 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.FeedManagementFragmentBinding
+import com.ummshsh.rssreader.ui.articleview.ArticleFragmentArgs
 import kotlinx.coroutines.*
 
 class FeedManagementFragment : Fragment() {
 
     private lateinit var viewModel: FeedManagementViewModel
+    private val args: FeedManagementFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +37,7 @@ class FeedManagementFragment : Fragment() {
         binding.viewModelFeed = viewModel
         binding.lifecycleOwner = this
 
+        binding.editTextUrl.setText(args.feedToAdd)
 
         val adapter = FeedListAdapter(object : FeedListAdapter.OnFeedDeleteClickListener {
             override fun clickDeleteOnItem(id: Int) {

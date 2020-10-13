@@ -114,7 +114,8 @@ class DbHelper(context: Context) :
                 DatabaseContract.Article.COLUMN_NAME_TITLE,
                 DatabaseContract.Article.COLUMN_NAME_CONTENTS,
                 DatabaseContract.Article.COLUMN_NAME_DESCRIPTION,
-                DatabaseContract.Article.COLUMN_NAME_URL
+                DatabaseContract.Article.COLUMN_NAME_URL,
+                DatabaseContract.Article.COLUMN_NAME_READ
             ),
             fullSelection,
             null,
@@ -139,6 +140,8 @@ class DbHelper(context: Context) :
                     getString(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_DESCRIPTION))
                 val url =
                     getString(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_URL))
+                val read =
+                    getInt(getColumnIndexOrThrow(DatabaseContract.Article.COLUMN_NAME_READ))
 
                 articles.add(
                     ArticleDatabase(
@@ -148,7 +151,8 @@ class DbHelper(context: Context) :
                         title,
                         contents,
                         description,
-                        url
+                        url,
+                        read > 0
                     )
                 )
             }

@@ -25,7 +25,6 @@
             android:hint="@string/enter_url"
             android:importantForAutofill="no"
             android:inputType="textUri"
-            android:text="@string/https_waitbutwhy_com_feed"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

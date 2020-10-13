@@ -62,7 +62,7 @@ class Repository(private val database: DbHelper) {
         refreshALl()
     }
 
-    suspend fun markArticlesRead(isRead: Boolean, vararg articleIds: Int) {
+    fun markArticlesRead(isRead: Boolean, vararg articleIds: Int) {
         database.markArticleAsRead(isRead, *articleIds)
     }
 

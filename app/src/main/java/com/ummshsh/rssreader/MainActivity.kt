@@ -1,5 +1,6 @@
 package com.ummshsh.rssreader
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
@@ -22,11 +23,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.ummshsh.rssreader.databinding.MainActivityBinding
 import com.ummshsh.rssreader.ui.main.MainFragment
+import com.ummshsh.rssreader.ui.main.MainFragmentDirections
 import com.ummshsh.rssreader.ui.main.MainViewModel
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainActivityViewModel
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
@@ -34,12 +37,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.main_activity)
-        var binding: MainActivityBinding =
-            DataBindingUtil.setContentView(this, R.layout.main_activity)
+        binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
 
         val toolbar: Toolbar = findViewById(R.id.mainToolbar)
         setSupportActionBar(toolbar)
+
+        viewModel = ViewModelProvider(this, MainActivityViewModel.Factory(application))
+            .get(MainActivityViewModel::class.java)
 
         navController = findNavController(R.id.nav_host_fragment)
 
@@ -54,9 +58,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         findViewById<NavigationView>(R.id.navigationView).setupWithNavController(navController)
 
-        viewModel = ViewModelProvider(this, MainActivityViewModel.Factory(application))
-            .get(MainActivityViewModel::class.java)
-
         var viewModelMainFragment = ViewModelProvider(this, MainViewModel.Factory(application))
             .get(MainViewModel::class.java)
 
@@ -65,7 +66,6 @@ class MainActivity : AppCompatActivity() {
                 override fun clickFeed(id: Int) {
                     drawerLayout.closeDrawer(GravityCompat.START)
                     viewModelMainFragment.showOnlyFeed(id)
-                    Toast.makeText(applicationContext, "$id", Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -85,9 +85,19 @@ class MainActivity : AppCompatActivity() {
             if (destination.id == R.id.mainFragment) {
                 viewModel.refreshFeeds()
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-            }
-            else{
+            } else {
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+        }
+
+        when (intent?.action) {
+            Intent.ACTION_SEND -> {
+                if ("text/plain" == intent.type) {
+                    var action =
+                        MainFragmentDirections.actionMainFragmentToFeedManagementFragment()
+                    intent.clipData?.let { action.setFeedToAdd(it.getItemAt(0).text.toString()) }
+                    navController.navigate(action)
+                }
             }
         }
     }

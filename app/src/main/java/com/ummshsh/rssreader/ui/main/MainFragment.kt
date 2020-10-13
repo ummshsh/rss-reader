@@ -1,25 +1,30 @@
 package com.ummshsh.rssreader.ui.main
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.MainFragmentBinding
-import com.ummshsh.rssreader.ui.articleview.ArticleFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+
 
 class MainFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
     private lateinit var viewModel: MainViewModel
+    private lateinit var root: View
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,8 +37,7 @@ class MainFragment : Fragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        viewModel = ViewModelProviders
-            .of(this, MainViewModel.Factory(activity.application))
+        viewModel = ViewModelProvider(activity, MainViewModel.Factory(activity.application))
             .get(MainViewModel::class.java)
 
         binding.viewModel = viewModel
@@ -53,16 +57,26 @@ class MainFragment : Fragment() {
             }
         })
 
-        binding.buttonOpenFeedManagement.setOnClickListener {
-            binding.root.findNavController()
-                .navigate(R.id.action_mainFragment_to_feedManagementFragment)
-        }
-
-        return binding.root
+        root = binding.root
+        return root
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.refreshData()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_mark_all_read -> {
+                viewModel.markArticlesAsRead(true)
+                Snackbar.make(root, "All marked as read", Snackbar.LENGTH_LONG)
+                    .setAction("Undo") { _ -> viewModel.markArticlesAsRead(false) }
+                    .show()
+            }
+            R.id.action_toggle_read -> viewModel.toggleOnlyUnreadArticles()
+            R.id.action_toggle_sorting -> viewModel.toggleSorting()
+        }
+        return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_main, menu)
     }
 }

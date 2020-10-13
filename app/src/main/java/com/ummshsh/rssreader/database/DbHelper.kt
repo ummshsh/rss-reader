@@ -2,10 +2,10 @@ package com.ummshsh.rssreader.database
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
+import com.ummshsh.rssreader.model.ArticleStatus
 
 private const val SQL_CREATE_FEED_TABLE =
     "CREATE TABLE ${DatabaseContract.Feed.TABLE_NAME} (" +
@@ -22,6 +22,7 @@ private const val SQL_CREATE_ARTICLE_TABLE =
             "${DatabaseContract.Article.COLUMN_NAME_CONTENTS} TEXT, " +
             "${DatabaseContract.Article.COLUMN_NAME_DESCRIPTION} TEXT, " +
             "${DatabaseContract.Article.COLUMN_NAME_URL} TEXT, " +
+            "${DatabaseContract.Article.COLUMN_NAME_READ} BOOLEAN NOT NULL CHECK (${DatabaseContract.Article.COLUMN_NAME_READ} IN (0,1)), " +
             "FOREIGN KEY (${DatabaseContract.Article.COLUMN_NAME_FEED_ID}) REFERENCES ${DatabaseContract.Feed.TABLE_NAME}(${BaseColumns._ID}))"
 
 private const val SQL_DELETE_FEED_TABLE = "DROP TABLE IF EXISTS ${DatabaseContract.Feed.TABLE_NAME}"
@@ -81,13 +82,29 @@ class DbHelper(context: Context) :
                 put(DatabaseContract.Article.COLUMN_NAME_CONTENTS, it.contents)
                 put(DatabaseContract.Article.COLUMN_NAME_DESCRIPTION, it.description)
                 put(DatabaseContract.Article.COLUMN_NAME_URL, it.url)
+                put(DatabaseContract.Article.COLUMN_NAME_READ, it.isRead)
             }
             writableDatabase
                 .insert(DatabaseContract.Article.TABLE_NAME, null, values)
         }
     }
 
-    fun getArticles(): List<ArticleDatabase> {
+    fun getArticles(status: ArticleStatus, ascending: Boolean, feedId: Int): List<ArticleDatabase> {
+        val selectionReadUnread = when (status) {
+            ArticleStatus.All -> ""
+            ArticleStatus.Read -> "${DatabaseContract.Article.COLUMN_NAME_READ} = 1"
+            ArticleStatus.Unread -> "${DatabaseContract.Article.COLUMN_NAME_READ} = 0"
+        }
+
+        val selectionFeed =
+            if (feedId < 0) "" else "${DatabaseContract.Article.COLUMN_NAME_FEED_ID} = $feedId"
+
+        var fullSelection =
+            arrayOf(selectionReadUnread, selectionFeed).filter { it.isNotEmpty() }
+                .joinToString(separator = " AND ")
+
+        val orderBy = "${BaseColumns._ID} " + if (ascending) "ASC" else "DESC"
+
         val cursor = readableDatabase.query(
             DatabaseContract.Article.TABLE_NAME,
             arrayOf(
@@ -99,7 +116,11 @@ class DbHelper(context: Context) :
                 DatabaseContract.Article.COLUMN_NAME_DESCRIPTION,
                 DatabaseContract.Article.COLUMN_NAME_URL
             ),
-            null, null, null, null, null
+            fullSelection,
+            null,
+            null,
+            null,
+            orderBy
         )
 
         val articles = mutableListOf<ArticleDatabase>()
@@ -156,7 +177,6 @@ class DbHelper(context: Context) :
             null,
             null
         )
-
 
         val foundArticleGuids = mutableListOf<String>()
         with(cursor) {
@@ -251,6 +271,21 @@ class DbHelper(context: Context) :
             }
         }
         return feedName
+    }
+
+    fun markArticleAsRead(isRead: Boolean, vararg articleIds: Int) {
+        articleIds.forEach {
+            val values = ContentValues().apply {
+                put(DatabaseContract.Article.COLUMN_NAME_READ, isRead)
+            }
+            writableDatabase.update(
+                DatabaseContract.Article.TABLE_NAME,
+                values,
+                "${BaseColumns._ID} = ?",
+                arrayOf(it.toString())
+            )
+        }
+
     }
 
     companion object {

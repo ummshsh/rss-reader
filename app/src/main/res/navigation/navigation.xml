@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.ummshsh.rssreader.ui.main.MainFragment"
-        android:label="MainFragment" >
+        android:label="RSS Reader">
         <action
             android:id="@+id/action_mainFragment_to_feedManagementFragment"
             app:destination="@id/feedManagementFragment"
@@ -24,15 +24,16 @@
     <fragment
         android:id="@+id/feedManagementFragment"
         android:name="com.ummshsh.rssreader.ui.feedmanagement.FeedManagementFragment"
-        android:label="feed_management_fragment"
+        android:label="Feed management"
         tools:layout="@layout/feed_management_fragment" />
     <fragment
         android:id="@+id/articleFragment"
         android:name="com.ummshsh.rssreader.ui.articleview.ArticleFragment"
-        android:label="article_fragment"
-        tools:layout="@layout/article_fragment" >
+        android:label="Article"
+        tools:layout="@layout/article_fragment">
         <argument
             android:name="article_id"
             app:argType="integer" />
     </fragment>
+
 </navigation>

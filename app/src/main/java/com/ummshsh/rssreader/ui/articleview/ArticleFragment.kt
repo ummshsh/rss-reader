@@ -1,53 +1,42 @@
 package com.ummshsh.rssreader.ui.articleview
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.text.HtmlCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.ummshsh.rssreader.R
-import com.ummshsh.rssreader.database.DatabaseContract
-import com.ummshsh.rssreader.databinding.ArticleFragmentBinding
-import com.ummshsh.rssreader.databinding.FeedManagementFragmentBinding
-import com.ummshsh.rssreader.ui.feedmanagement.FeedManagementViewModel
 
 class ArticleFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ArticleFragment()
-    }
-
     private lateinit var viewModel: ArticleViewModel
-    val args: ArticleFragmentArgs by navArgs()
+    private val args: ArticleFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        var binding: ArticleFragmentBinding =
-            DataBindingUtil.inflate(inflater, R.layout.article_fragment, container, false)
-
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
 
-        viewModel = ViewModelProviders
-            .of(this, ArticleViewModel.Factory(args.articleId, activity.application))
-            .get(ArticleViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, ArticleViewModel.Factory(args.articleId, activity.application))
+                .get(ArticleViewModel::class.java)
 
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        var text = TextView(context)
+        text.text = HtmlCompat.fromHtml(viewModel.content, HtmlCompat.FROM_HTML_MODE_LEGACY);
 
-        return binding.root
+        var view = inflater.inflate(R.layout.article_fragment, container, false)
+        view.findViewById<ConstraintLayout>(R.id.articleConstraintLayout).addView(text)
+
+        return view
     }
-
-//    override fun onActivityCreated(savedInstanceState: Bundle?) {
-//        super.onActivityCreated(savedInstanceState)
-//        viewModel = ViewModelProviders.of(this).get(ArticleViewModel::class.java)
-//        // TODO: Use the ViewModel
-//    }
 }

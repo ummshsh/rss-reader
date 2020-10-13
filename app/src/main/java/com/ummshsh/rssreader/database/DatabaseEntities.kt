@@ -7,7 +7,8 @@ data class ArticleDatabase(
     val title: String,
     val contents: String,
     val description: String,
-    val url: String
+    val url: String,
+    val isRead: Boolean = false
 )
 
 data class Feed(

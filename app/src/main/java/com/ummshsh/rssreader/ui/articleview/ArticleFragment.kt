@@ -15,10 +15,6 @@ import com.ummshsh.rssreader.R
 
 class ArticleFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ArticleFragment()
-    }
-
     private lateinit var viewModel: ArticleViewModel
     private val args: ArticleFragmentArgs by navArgs()
 

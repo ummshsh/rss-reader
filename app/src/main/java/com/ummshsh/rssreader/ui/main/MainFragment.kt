@@ -18,10 +18,6 @@ import kotlinx.coroutines.withContext
 
 class MainFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
     private lateinit var viewModel: MainViewModel
     private lateinit var root: View
 

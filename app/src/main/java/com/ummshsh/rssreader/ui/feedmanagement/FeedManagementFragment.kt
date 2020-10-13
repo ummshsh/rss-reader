@@ -15,10 +15,6 @@ import kotlinx.coroutines.*
 
 class FeedManagementFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = FeedManagementFragment()
-    }
-
     private lateinit var viewModel: FeedManagementViewModel
 
     override fun onCreateView(

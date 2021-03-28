@@ -1,4 +1,4 @@
-package com.ummshsh.rssreader.ui.articleview
+package com.ummshsh.rssreader.ui.articleviewfragment
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

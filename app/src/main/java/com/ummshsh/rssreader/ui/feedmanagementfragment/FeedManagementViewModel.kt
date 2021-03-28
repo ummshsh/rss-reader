@@ -1,4 +1,4 @@
-package com.ummshsh.rssreader.ui.feedmanagement
+package com.ummshsh.rssreader.ui.feedmanagementfragment
 
 import android.app.Application
 import android.widget.Toast
@@ -7,7 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ummshsh.rssreader.database.DbHelper
-import com.ummshsh.rssreader.database.FeedDatabase
+import com.ummshsh.rssreader.model.FeedDatabase
+import com.ummshsh.rssreader.network.FeedFinder
 import kotlinx.coroutines.*
 import  com.ummshsh.rssreader.repository.Repository
 
@@ -24,7 +25,7 @@ class FeedManagementViewModel(var application: Application) : ViewModel() {
         get() = _feeds
 
     init {
-        repository.refreshALl()
+        repository.refreshAll()
         _feeds = repository.feeds
     }
 
@@ -35,8 +36,13 @@ class FeedManagementViewModel(var application: Application) : ViewModel() {
 
     fun addFeed(url: String) {
         viewModelScope.launch {
-            // fetch feed name first
-            repository.addFeed(url, url)
+            var feed = FeedFinder().findFeed(url)
+            if (feed.isEmpty) {
+                Toast.makeText(application, "No feed found", Toast.LENGTH_SHORT)
+                return@launch
+            }
+            repository.addFeed(feed)
+            Toast.makeText(application, "Feed added", Toast.LENGTH_SHORT)
         }
     }
 
@@ -48,7 +54,7 @@ class FeedManagementViewModel(var application: Application) : ViewModel() {
     }
 
     fun refreshData() {
-        repository.refreshALl()
+        repository.refreshAll()
     }
 
     class Factory(private val app: Application) : ViewModelProvider.Factory {

@@ -5,11 +5,11 @@
 
         <variable
             name="feed"
-            type="com.ummshsh.rssreader.database.FeedDatabase" />
+            type="com.ummshsh.rssreader.model.FeedDatabase" />
 
         <variable
             name="viewModel"
-            type="com.ummshsh.rssreader.ui.feedmanagement.FeedManagementViewModel" />
+            type="com.ummshsh.rssreader.ui.feedmanagementfragment.FeedManagementViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"

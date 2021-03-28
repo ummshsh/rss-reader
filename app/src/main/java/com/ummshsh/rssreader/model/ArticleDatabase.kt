@@ -1,4 +1,4 @@
-package com.ummshsh.rssreader.database
+package com.ummshsh.rssreader.model
 
 data class ArticleDatabase(
     val id: Int = 0,
@@ -9,16 +9,4 @@ data class ArticleDatabase(
     val description: String,
     val url: String,
     val isRead: Boolean = false
-)
-
-data class FeedDatabase(
-    val id: Int = 0,
-    val title: String,
-    val link: String,
-    val folderId: Long
-)
-
-data class FolderDatabase(
-    val id: Int = 0,
-    val name: String
 )

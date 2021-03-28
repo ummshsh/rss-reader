@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.ummshsh.rssreader.ui.main.MainFragment"
+        android:name="com.ummshsh.rssreader.ui.mainfragment.MainFragment"
         android:label="RSS Reader">
         <action
             android:id="@+id/action_mainFragment_to_feedManagementFragment"
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/feedManagementFragment"
-        android:name="com.ummshsh.rssreader.ui.feedmanagement.FeedManagementFragment"
+        android:name="com.ummshsh.rssreader.ui.feedmanagementfragment.FeedManagementFragment"
         android:label="Feed management"
         tools:layout="@layout/feed_management_fragment" >
         <argument
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
-        android:name="com.ummshsh.rssreader.ui.articleview.ArticleFragment"
+        android:name="com.ummshsh.rssreader.ui.articleviewfragment.ArticleFragment"
         android:label="Article"
         tools:layout="@layout/article_fragment">
         <argument

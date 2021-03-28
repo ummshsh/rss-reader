@@ -7,7 +7,7 @@
 
         <variable
             name="viewModelFeed"
-            type="com.ummshsh.rssreader.ui.feedmanagement.FeedManagementViewModel" />
+            type="com.ummshsh.rssreader.ui.feedmanagementfragment.FeedManagementViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="@dimen/contentPadding"
-        tools:context=".ui.feedmanagement.FeedManagementFragment">
+        tools:context=".ui.feedmanagementfragment.FeedManagementFragment">
 
         <EditText
             android:id="@+id/editTextUrl"

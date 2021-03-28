@@ -1,9 +1,9 @@
 package com.ummshsh.rssreader.repository
 
 import androidx.lifecycle.MutableLiveData
-import com.ummshsh.rssreader.database.ArticleDatabase
+import com.ummshsh.rssreader.model.ArticleDatabase
 import com.ummshsh.rssreader.database.DbHelper
-import com.ummshsh.rssreader.database.FeedDatabase
+import com.ummshsh.rssreader.model.FeedDatabase
 import com.ummshsh.rssreader.model.ArticleLight
 import com.ummshsh.rssreader.model.ArticleStatus
 import com.ummshsh.rssreader.network.RssFetcher
@@ -62,9 +62,9 @@ class Repository(private val database: DbHelper) {
         return articles.filter { !foundGuidList.contains(it.guid) }
     }
 
-    fun addFeed(title: String, url: String) {
-        database.insert(FeedDatabase(-1, title, url, -1))
-        refreshALl()
+    fun addFeed(feedDatabase: FeedDatabase) {
+        database.insert(feedDatabase)
+        refreshAll()
     }
 
     fun markArticlesRead(isRead: Boolean, vararg articleIds: Int) {
@@ -73,10 +73,10 @@ class Repository(private val database: DbHelper) {
 
     fun deleteFeed(id: Int) {
         database.deleteFeed(id)
-        refreshALl()
+        refreshAll()
     }
 
-    fun refreshALl() {
+    fun refreshAll() {
         refreshFeeds()
         refreshArticles()
     }

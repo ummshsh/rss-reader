@@ -2,7 +2,7 @@ package com.ummshsh.rssreader.network
 
 import com.prof.rssparser.Article
 import com.prof.rssparser.Parser
-import com.ummshsh.rssreader.database.ArticleDatabase
+import com.ummshsh.rssreader.model.ArticleDatabase
 
 class RssFetcher {
     suspend fun fetchEntries(url: String): List<Article> {

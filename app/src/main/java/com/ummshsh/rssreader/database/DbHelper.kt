@@ -5,7 +5,9 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
+import com.ummshsh.rssreader.model.ArticleDatabase
 import com.ummshsh.rssreader.model.ArticleStatus
+import com.ummshsh.rssreader.model.FeedDatabase
 
 private const val SQL_CREATE_FEED_TABLE =
     "CREATE TABLE ${DatabaseContract.Feed.TABLE_NAME} (" +

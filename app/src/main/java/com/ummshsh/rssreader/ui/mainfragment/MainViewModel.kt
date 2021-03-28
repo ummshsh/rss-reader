@@ -1,9 +1,8 @@
-package com.ummshsh.rssreader.ui.main
+package com.ummshsh.rssreader.ui.mainfragment
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import com.ummshsh.rssreader.database.ArticleDatabase
 import com.ummshsh.rssreader.database.DbHelper
 import com.ummshsh.rssreader.model.ArticleLight
 import com.ummshsh.rssreader.model.ArticleStatus
@@ -33,7 +32,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         Log.i("MainViewModel","Created + ${this.toString()}")
         toggleOnlyUnreadArticles()
         toggleSorting()
-        repository.refreshALl()
+        repository.refreshAll()
         _articles = repository.articles
     }
 

@@ -1,9 +1,9 @@
-package com.ummshsh.rssreader
+package com.ummshsh.rssreader.ui.mainactivity
 
 import android.app.Application
 import androidx.lifecycle.*
 import com.ummshsh.rssreader.database.DbHelper
-import com.ummshsh.rssreader.database.FeedDatabase
+import com.ummshsh.rssreader.model.FeedDatabase
 import com.ummshsh.rssreader.repository.Repository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +21,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
         get() = _feeds
 
     init {
-        repository.refreshALl()
+        repository.refreshAll()
         _feeds = repository.feeds
     }
 
@@ -31,7 +31,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun refreshFeeds(){
-        repository.refreshALl()
+        repository.refreshAll()
     }
 
     class Factory(private val app: Application) : ViewModelProvider.Factory {

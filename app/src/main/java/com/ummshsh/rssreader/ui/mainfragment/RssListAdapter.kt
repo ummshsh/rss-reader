@@ -1,4 +1,4 @@
-package com.ummshsh.rssreader.ui.main
+package com.ummshsh.rssreader.ui.mainfragment
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ummshsh.rssreader.R
-import com.ummshsh.rssreader.database.ArticleDatabase
 import com.ummshsh.rssreader.model.ArticleLight
 
 class RssListAdapter(private val clickListener: OnArticleClickListener) :

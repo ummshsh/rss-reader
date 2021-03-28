@@ -5,11 +5,11 @@
 
         <variable
             name="feed"
-            type="com.ummshsh.rssreader.database.FeedDatabase" />
+            type="com.ummshsh.rssreader.model.FeedDatabase" />
 
         <variable
             name="viewModel"
-            type="com.ummshsh.rssreader.MainActivityViewModel" />
+            type="com.ummshsh.rssreader.ui.mainactivity.MainActivityViewModel" />
     </data>
 
     <LinearLayout

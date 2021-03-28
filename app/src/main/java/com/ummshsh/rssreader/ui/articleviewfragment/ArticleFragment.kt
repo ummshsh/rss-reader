@@ -1,4 +1,4 @@
-package com.ummshsh.rssreader.ui.articleview
+package com.ummshsh.rssreader.ui.articleviewfragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.ummshsh.rssreader.R
 

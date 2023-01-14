@@ -194,7 +194,7 @@ class DbHelper(context: Context) :
         return foundArticleGuids
     }
 
-    fun insert(vararg feeds: Feed) {
+    fun insert(vararg feeds: IFeed) {
         feeds.forEach {
             val values = ContentValues().apply {
                 put(DatabaseContract.Feed.COLUMN_NAME_TITLE, it.title)

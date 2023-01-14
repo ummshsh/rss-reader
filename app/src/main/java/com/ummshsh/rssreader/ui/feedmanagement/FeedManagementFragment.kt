@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.FeedManagementFragmentBinding
 import com.ummshsh.rssreader.ui.articleview.ArticleFragmentArgs
@@ -54,7 +55,16 @@ class FeedManagementFragment : Fragment() {
 
         binding.buttonAddFeed.setOnClickListener {
             GlobalScope.launch {
-                viewModel.addFeed(binding.editTextUrl.text.toString())
+                var success = viewModel.addFeed(binding.editTextUrl.text.toString())
+                if (success) {
+                    Snackbar.make(binding.root, "Successfully added", Snackbar.LENGTH_SHORT)
+//                        .setAction("Undo") { _ -> viewModel. }
+//                            later as action I can assign this feed to folder
+                        .show()
+                } else {
+                    Snackbar.make(binding.root, "No such feed", Snackbar.LENGTH_LONG)
+                        .show()
+                }
             }
         }
 

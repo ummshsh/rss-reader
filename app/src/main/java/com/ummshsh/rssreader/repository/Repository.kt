@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.ummshsh.rssreader.database.ArticleDatabase
 import com.ummshsh.rssreader.database.DbHelper
 import com.ummshsh.rssreader.database.Feed
+import com.ummshsh.rssreader.database.InvalidFeed
 import com.ummshsh.rssreader.model.ArticleStatus
 import com.ummshsh.rssreader.network.RssFetcher
 import com.ummshsh.rssreader.network.asDatabaseArticles
@@ -17,6 +18,7 @@ class Repository(private val database: DbHelper) {
     private var onlyArticlesStatus: ArticleStatus = ArticleStatus.All
     private var ascending: Boolean = false
     private var feedId: Int = -1
+    private val fetcher:RssFetcher = RssFetcher()
 
     private val _articles = MutableLiveData<List<ArticleDatabase>>()
     val articles: MutableLiveData<List<ArticleDatabase>>
@@ -43,7 +45,7 @@ class Repository(private val database: DbHelper) {
                 if (feeds.any()) {
                     for (feed in feeds) {
                         val articles =
-                            RssFetcher().fetchEntries(feed.link).asDatabaseArticles(feed.id)
+                            fetcher.fetchEntries(feed.link).asDatabaseArticles(feed.id)
                         database.insert(filterExistingArticlesBeforeInsert(articles))
                     }
                 }
@@ -57,9 +59,16 @@ class Repository(private val database: DbHelper) {
         return articles.filter { !foundGuidList.contains(it.guid) }
     }
 
-    fun addFeed(title: String, url: String) {
-        database.insert(Feed(-1, title, url, -1))
-        refreshALl()
+    fun addFeed(url: String): Boolean {
+        var feed = fetcher.getFeed(url)
+
+        return if (feed is InvalidFeed) {
+            false
+        } else {
+            database.insert(feed)
+            refreshALl()
+            true
+        }
     }
 
     fun markArticlesRead(isRead: Boolean, vararg articleIds: Int) {

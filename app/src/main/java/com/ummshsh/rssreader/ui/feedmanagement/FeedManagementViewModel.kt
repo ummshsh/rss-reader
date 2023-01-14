@@ -33,10 +33,12 @@ class FeedManagementViewModel(var application: Application) : ViewModel() {
         viewModelJob.cancel()
     }
 
-    fun addFeed(url: String) {
+    fun addFeed(url: String) : Boolean {
+        var feedExists = false
         viewModelScope.launch {
-            repository.addFeed(url, url)
+            feedExists = repository.addFeed(url)
         }
+        return feedExists
     }
 
     fun deleteFeed(id: Int) {

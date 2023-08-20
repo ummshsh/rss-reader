@@ -36,7 +36,7 @@ class ArticleViewModel(articleId: Int, application: Application) : ViewModel() {
     }
 
     class Factory(private val id: Int, private val app: Application) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(ArticleViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 return ArticleViewModel(id, app) as T

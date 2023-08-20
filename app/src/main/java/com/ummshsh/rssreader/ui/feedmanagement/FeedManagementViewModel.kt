@@ -51,7 +51,7 @@ class FeedManagementViewModel(var application: Application) : ViewModel() {
     }
 
     class Factory(private val app: Application) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(FeedManagementViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
                 return FeedManagementViewModel(app) as T

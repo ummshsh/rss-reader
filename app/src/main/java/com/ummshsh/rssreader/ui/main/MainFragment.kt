@@ -1,19 +1,20 @@
 package com.ummshsh.rssreader.ui.main
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.ummshsh.rssreader.R
 import com.ummshsh.rssreader.databinding.MainFragmentBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 class MainFragment : Fragment() {

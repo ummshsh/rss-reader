@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -12,7 +11,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.get
@@ -22,7 +20,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.ummshsh.rssreader.databinding.MainActivityBinding
-import com.ummshsh.rssreader.ui.main.MainFragment
 import com.ummshsh.rssreader.ui.main.MainFragmentDirections
 import com.ummshsh.rssreader.ui.main.MainViewModel
 
@@ -42,8 +39,7 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.mainToolbar)
         setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProvider(this, MainActivityViewModel.Factory(application))
-            .get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this, MainActivityViewModel.Factory(application))[MainActivityViewModel::class.java]
 
         navController = findNavController(R.id.nav_host_fragment)
 
